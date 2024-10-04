@@ -1,0 +1,19 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
+             version="3.1">
+
+    <persistence-unit name="myPostgresPU">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+<!--        <class>com.example.entity.MyEntity</class>-->
+
+        <!-- Properties are loaded programmatically, not from persistence.xml -->
+        <properties>
+            <property name="jakarta.persistence.jdbc.url" value=""/>
+            <property name="jakarta.persistence.jdbc.user" value=""/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        </properties>
+    </persistence-unit>
+</persistence>
