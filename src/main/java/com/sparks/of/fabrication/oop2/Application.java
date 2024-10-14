@@ -2,6 +2,7 @@ package com.sparks.of.fabrication.oop2;
 
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.utils.Env;
+import jakarta.persistence.EntityManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,8 +13,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Application extends javafx.application.Application {
-    private static final Env env = new Env();
-    private static final EntityManagerWrapper entityManagerWrapper = new EntityManagerWrapper(env);
+    private static final Env env = Singleton.getInstance(Env.class, new Env()).y();
+    private static final EntityManagerWrapper entityManager =
+            Singleton.getInstance(EntityManagerWrapper.class, new EntityManagerWrapper(env)).y();
     private static final Logger log = LogManager.getLogger(Application.class);
 
     @Override
@@ -27,7 +29,7 @@ public class Application extends javafx.application.Application {
     }
 
     private static void exit() {
-        boolean exit = entityManagerWrapper.cleanUp();
+        boolean exit = entityManager.cleanUp();
 
         if(exit) {
             log.info("Application exited successfully");
