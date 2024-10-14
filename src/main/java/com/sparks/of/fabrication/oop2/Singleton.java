@@ -1,19 +1,26 @@
 package com.sparks.of.fabrication.oop2;
 
-public class Singleton {
+import com.sparks.of.fabrication.oop2.utils.Pair;
 
-    private static Singleton instance;
+import java.util.HashMap;
 
-    private Singleton() {}
+public class Singleton<T> {
 
-    public static Singleton getInstance() {
-        if (instance == null) {
-            instance = new Singleton();
+    private static final HashMap<Class<?>, Pair<Singleton<?>, Object>> instances = new HashMap<>();
+
+    private Singleton(T instanceObject) {}
+
+    public static synchronized <T> Pair<Singleton<?>, T> getInstance(Class<T> tClass, T obj) {
+        if (!instances.containsKey(tClass)) {
+            instances.put(tClass, new Pair<>(new Singleton<>(obj), obj));
         }
-        return instance;
+        return (Pair<Singleton<?>, T>) instances.get(tClass);
     }
 
-    public void action() {
-        //Add Action
+    public static synchronized <T> T getInstance(Class<T> tClass) {
+        if (instances.containsKey(tClass)) {
+            return (T) instances.get(tClass).y();
+        }
+        return null;
     }
 }
