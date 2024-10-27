@@ -22,7 +22,7 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
         SceneLoader sceneLoader = new SceneLoader();
-        sceneLoader.loadScene("main_scene.fxml",450, 240,"Main",false,stage);
+        sceneLoader.loadScene("scenes/main_scene.fxml",450, 240,"Main",false,stage);
     }
 
     private static void exit() {

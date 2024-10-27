@@ -28,12 +28,12 @@ public class Main_scene {
         try {
             SceneLoader loader = new SceneLoader();
             if(user.equals("admin") && password.equals("admin")) {
-                loader.loadScene("administrator_scene.fxml",500,500,"Admin",true,new Stage());
+                loader.loadScene("scenes/administrator_scene.fxml",500,500,"Admin",true,new Stage());
             }
             if(user.equals("manager") && password.equals("manager")) {
-                loader.loadScene("manager_scene.fxml",500,500,"Manager",true,new Stage());
+                loader.loadScene("scenes/manager_scene.fxml",500,500,"Manager",true,new Stage());
             }
-            loader.loadScene("client_scene.fxml", 500, 500, "Client", true, new Stage());
+            loader.loadScene("scenes/client_scene.fxml", 500, 500, "Client", true, new Stage());
             username.getScene().getWindow().hide();
         }catch(Exception e) {
             e.printStackTrace();
