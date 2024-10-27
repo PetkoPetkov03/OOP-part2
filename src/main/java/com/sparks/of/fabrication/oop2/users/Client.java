@@ -5,7 +5,7 @@ import com.sparks.of.fabrication.oop2.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-class Client {
+public class Client {
     private String name;
     private List<Item> cart;
 
@@ -20,6 +20,10 @@ class Client {
 
     public List<Item> getCart() {
         return cart;
+    }
+
+    public void addItem(Item item) {
+        cart.add(item);
     }
 
 }
