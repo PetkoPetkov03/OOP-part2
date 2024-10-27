@@ -12,6 +12,7 @@ module com.sparks.of.fabrication.oop2 {
     requires annotations;
 
     opens com.sparks.of.fabrication.oop2 to javafx.fxml;
+    opens com.sparks.of.fabrication.oop2.scenes to javafx.fxml;
     exports com.sparks.of.fabrication.oop2;
     exports com.sparks.of.fabrication.oop2.utils;
     opens com.sparks.of.fabrication.oop2.utils to javafx.fxml;

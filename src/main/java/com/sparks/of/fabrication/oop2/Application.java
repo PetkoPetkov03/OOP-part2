@@ -1,5 +1,6 @@
 package com.sparks.of.fabrication.oop2;
 
+import com.sparks.of.fabrication.oop2.scenes.SceneLoader;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.utils.Env;
 import jakarta.persistence.EntityManager;
@@ -20,12 +21,8 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("build.css")).toExternalForm());
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+        SceneLoader sceneLoader = new SceneLoader();
+        sceneLoader.loadScene("main_scene.fxml",450, 240,"Main",false,stage);
     }
 
     private static void exit() {
