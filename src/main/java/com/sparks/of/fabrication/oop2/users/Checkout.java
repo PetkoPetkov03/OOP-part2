@@ -1,6 +1,6 @@
 package com.sparks.of.fabrication.oop2.users;
 
-import com.sparks.of.fabrication.oop2.Item;
+import com.sparks.of.fabrication.oop2.utils.Item;
 
 public class Checkout {
     private Employee employee;
