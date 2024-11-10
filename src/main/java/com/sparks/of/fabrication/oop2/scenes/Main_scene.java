@@ -6,8 +6,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
 
 public class Main_scene {
+
+    private final Logger log = LogManager.getLogger(Main_scene.class);
     @FXML
     private TextField username;
 
@@ -34,7 +39,7 @@ public class Main_scene {
             loader.loadScene("scenes/client_scene.fxml", 500, 500, "Client", true, new Stage());
             username.getScene().getWindow().hide();
         }catch(Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
