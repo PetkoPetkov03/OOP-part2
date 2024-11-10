@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.sparks.of.fabrication.oop2.scenes.Inventory_scene">
+        <TableView fx:id="inventoryTable" layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0"  AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <columns>
+                <TableColumn fx:id="idItemColumn" text="ID Item" prefWidth="100.0" />
+                <TableColumn fx:id="nameColumn" text="Name" prefWidth="150.0" />
+                <TableColumn fx:id="categoryColumn" text="Category" prefWidth="100.0" />
+                <TableColumn fx:id="priceColumn" text="Price" prefWidth="100.0" />
+                <TableColumn fx:id="arrivalPriceColumn" text="Arrival Price" prefWidth="100.0" />
+                <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100.0" />
+            </columns>
+        </TableView>
+</AnchorPane>

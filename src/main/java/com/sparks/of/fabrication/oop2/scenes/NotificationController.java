@@ -1,62 +1,38 @@
 package com.sparks.of.fabrication.oop2.scenes;
 
+import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ListCell;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import lombok.Setter;
 
 public class NotificationController {
+    @FXML private TableView<?> notificationTable;
+    @FXML private TableColumn<?, ?> idNotificationColumn;
+    @FXML private TableColumn<?, Integer> idEmployeeColumn;
+    @FXML private TableColumn<?, String> messageColumn;
+    @FXML private TableColumn<?, String> statusColumn;
+    @FXML private TableColumn<?,String> dateSentColumn;
 
-    @FXML
-    private ListView<String> notificationListView;
-
-    private ObservableList<String> notifications;
+    @Setter
+    private EntityManagerWrapper entityManager = Singleton.getInstance(EntityManagerWrapper.class);
 
     @FXML
     public void initialize() {
+        idNotificationColumn.setCellValueFactory(new PropertyValueFactory<>("idNotification"));
+        idEmployeeColumn.setCellValueFactory(new PropertyValueFactory<>("idEmployee"));
+        messageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        dateSentColumn.setCellValueFactory(new PropertyValueFactory<>("dateSent"));
 
-        notifications = FXCollections.observableArrayList(
-                "Notification 1: New message",
-                "Notification 2: Task completed",
-                "Notification 3: Reminder"
-        );
-        notificationListView.setItems(notifications);
-
-        notificationListView.setCellFactory(lv -> new ListCell<>() {
-            private Button markAsReadButton = new Button("Mark as Read");
-
-            {
-                markAsReadButton.setOnAction(e -> {
-                    String notification = getItem();
-                    if (notification != null) {
-                        markAsRead(notification);
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    setText(item);
-                    setGraphic(markAsReadButton);
-                }
-            }
-        });
+        idNotificationColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.25));
+        idEmployeeColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.15));
+        messageColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.2));
+        statusColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.15));
+        dateSentColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.25));
     }
 
-    private void markAsRead(String notification) {
-        notifications.remove(notification);
-    }
-
-    @FXML
-    private void closeWindow() {
-        notificationListView.getScene().getWindow().hide();
-    }
 }
-

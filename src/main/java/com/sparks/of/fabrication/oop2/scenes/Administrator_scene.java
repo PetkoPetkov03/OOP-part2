@@ -1,7 +1,10 @@
 package com.sparks.of.fabrication.oop2.scenes;
 
+import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 public class Administrator_scene {
     @FXML
@@ -12,18 +15,29 @@ public class Administrator_scene {
 
     @FXML
     private Button btnCheckout;
+    private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
 
 
     @FXML
     private void handleInventory() {
         System.out.println("Managing Inventory...");
-        //load scene
+        SceneLoader sceneLoader = new SceneLoader();
+        try {
+            sceneLoader.loadScene("scenes/inventory_scene.fxml", 500, 500, "Inventory", true, new Stage());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void handleCreateEmployee() {
         System.out.println("Creating Employee...");
-        //load scene
+        SceneLoader sceneLoader = new SceneLoader();
+        try {
+            sceneLoader.loadScene("scenes/createEmployee_scene.fxml", 500, 500, "Create Employee", true, new Stage());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

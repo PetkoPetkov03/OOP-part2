@@ -23,8 +23,6 @@ public class Main_scene {
                 showAlert("Enter both user and password");
             }
 
-
-            // Check credentials from database
         try {
             SceneLoader loader = new SceneLoader();
             if(user.equals("admin") && password.equals("admin")) {

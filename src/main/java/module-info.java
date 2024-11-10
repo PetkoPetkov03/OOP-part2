@@ -10,6 +10,7 @@ module com.sparks.of.fabrication.oop2 {
     requires jakarta.persistence;
     requires org.slf4j;
     requires annotations;
+    requires static lombok;
 
     opens com.sparks.of.fabrication.oop2 to javafx.fxml;
     opens com.sparks.of.fabrication.oop2.scenes to javafx.fxml;
