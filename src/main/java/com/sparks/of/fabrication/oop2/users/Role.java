@@ -3,7 +3,7 @@ package com.sparks.of.fabrication.oop2.users;
 import java.util.Set;
 
 public enum Role {
-    CASHIER(Set.of(Privileges.CASHIER)),  // No need for WORK_AT_CHECKOUT here
+    CASHIER(Set.of(Privileges.CASHIER)),
     MANAGER(Set.of(Privileges.MANAGE_INVENTORY, Privileges.VIEW_REPORTS)),
     ADMIN(Set.of(Privileges.ADMIN_PRIVILEGES, Privileges.VIEW_REPORTS));
 
