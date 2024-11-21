@@ -12,9 +12,15 @@ module com.sparks.of.fabrication.oop2 {
     requires annotations;
     requires static lombok;
 
+    requires org.hibernate.orm.core;
+
+    opens com.sparks.of.fabrication.oop2.models to org.hibernate.orm.core; // Open package for Hibernate reflection
+
+
+
     opens com.sparks.of.fabrication.oop2 to javafx.fxml;
     opens com.sparks.of.fabrication.oop2.scenes to javafx.fxml;
+    opens com.sparks.of.fabrication.oop2.utils to javafx.fxml;
     exports com.sparks.of.fabrication.oop2;
     exports com.sparks.of.fabrication.oop2.utils;
-    opens com.sparks.of.fabrication.oop2.utils to javafx.fxml;
 }

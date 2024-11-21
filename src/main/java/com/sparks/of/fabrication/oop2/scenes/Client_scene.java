@@ -1,7 +1,7 @@
 package com.sparks.of.fabrication.oop2.scenes;
 
-import com.sparks.of.fabrication.oop2.Item;
 import com.sparks.of.fabrication.oop2.users.Client;
+import com.sparks.of.fabrication.oop2.utils.Item;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

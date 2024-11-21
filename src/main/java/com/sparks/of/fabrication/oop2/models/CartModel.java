@@ -1,17 +1,20 @@
 package com.sparks.of.fabrication.oop2.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.id.UUIDGenerator;
+
+import java.util.UUID;
 
 @Entity
+@Table(name = "cart_model", schema = "public")
 @Getter
 @Setter
-@Table(name = "cart")
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class CartModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @Id()
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 }
