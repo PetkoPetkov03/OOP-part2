@@ -1,8 +1,11 @@
 package com.sparks.of.fabrication.oop2.users;
 
+import lombok.Getter;
+
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public class Employee {
     private String name;
     private int employeeId;
@@ -18,10 +21,6 @@ public class Employee {
         this.role = role;
         System.out.println(name + " assigned role: " + role.name());
         System.out.println("Privileges granted: " + role.getPrivileges());
-    }
-
-    public Role getRole() {
-        return role;
     }
 
     // Check if the employee has a specific privilege based on their role
@@ -45,11 +44,4 @@ public class Employee {
         }
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getEmployeeId() {
-        return employeeId;
-    }
 }

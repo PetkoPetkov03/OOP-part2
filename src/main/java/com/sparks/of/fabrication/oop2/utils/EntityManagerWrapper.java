@@ -22,11 +22,9 @@ public class EntityManagerWrapper {
 
             emf = Persistence.createEntityManagerFactory("jpaOOP", properties);
 
-            if (emf != null) {
-                log.info("Successfully initialized EntityManagerFactory.");
+            if (emf == null) {
+                log.error("ENTITY MANAGET UNINITIALIZED");
             }
-
-            assert emf != null;
             em = emf.createEntityManager();
 
             if (em != null) {
@@ -34,7 +32,7 @@ public class EntityManagerWrapper {
             }
 
         } catch (Exception e) {
-            log.error("Error Initializing Entity manager factory {}", e.getMessage());
+            log.error("Error Initializing Entity manager factory {}" , e);
         }
     }
 
@@ -42,13 +40,12 @@ public class EntityManagerWrapper {
     private static Map<String, String> getProperties(Env env) {
         Map<String, String> properties = new HashMap<>();
 
-        properties.put("javax.persistence.jdbc.url", env.getDbUrl());
-        properties.put("javax.persistence.jdbc.user", env.getDbUser());
-        properties.put("javax.persistence.jdbc.password", env.getDbPassword());
-        properties.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
-        properties.put("jakarta.persistence.provider", "org.hibernate.jpa.HibernatePersistenceProvider");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("jakarta.persistence.jdbc.url", env.getDbUrl());
+        properties.put("jakarta.persistence.jdbc.user", env.getDbUser());
+        properties.put("jakarta.persistence.jdbc.password", env.getDbPassword());
+        properties.put("jakarta.persistence.jdbc.driver", "org.postgresql.Driver");
+        properties.put("hibernate.hbm2ddl.auto", "update"); // Or "create", "create-drop"
+
         return properties;
     }
 
@@ -80,9 +77,8 @@ public class EntityManagerWrapper {
 
     public <T> Pair<Boolean, T> findEntityById(Class<T> tClass, String id) {
         try {
-            beginTransaction();
             T entity = em.find(tClass, id);
-            commitTransaction();
+
             log.info("Found entity: {}", entity);
             return new Pair<>(true, entity);
         } catch (Exception e) {
@@ -94,10 +90,10 @@ public class EntityManagerWrapper {
 
     public boolean cleanUp() {
         try {
-            if(em != null) {
+            if(em != null && em.isOpen()) {
                 em.close();
             }
-            if(emf != null) {
+            if(emf != null && emf.isOpen()) {
                 emf.close();
             }
             log.info("Cleared EntityManager");
@@ -109,3 +105,15 @@ public class EntityManagerWrapper {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
