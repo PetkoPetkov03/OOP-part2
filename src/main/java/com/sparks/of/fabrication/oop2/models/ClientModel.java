@@ -6,17 +6,13 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "client_model", schema = "public")
+@Table(name = "client_model")
 @Getter
 @Setter
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(onlyExplicitlyIncluded = true)
 public class ClientModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100)
