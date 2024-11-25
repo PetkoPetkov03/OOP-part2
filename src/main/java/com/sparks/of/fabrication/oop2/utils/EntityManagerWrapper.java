@@ -32,7 +32,7 @@ public class EntityManagerWrapper {
             }
 
         } catch (Exception e) {
-            log.error("Error Initializing Entity manager factory {}" , e);
+            log.error("Error Initializing Entity manager factory CAUSE: {} MESSAGE: {}" , e.getMessage(), e.getCause());
         }
     }
 
