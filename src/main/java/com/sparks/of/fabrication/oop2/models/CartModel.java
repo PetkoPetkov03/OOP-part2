@@ -7,7 +7,7 @@ import org.hibernate.id.UUIDGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cart_model", schema = "public")
+@Table(name = "cart_model")
 @Getter
 @Setter
 @NoArgsConstructor
