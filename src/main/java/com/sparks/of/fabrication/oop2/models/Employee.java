@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "employee")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Employee {
 
     @Id
@@ -18,6 +17,13 @@ public class Employee {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    @ToString.Include
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)

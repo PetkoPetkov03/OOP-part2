@@ -6,11 +6,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.PasswordField?>
 <VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sparks.of.fabrication.oop2.scenes.CreateEmployee_scene">
     <Label text="Create New Employee" style="-fx-font-size: 16px;" />
 
-    <Label text="Employee ID" />
-    <TextField fx:id="idEmployeeField" promptText="Enter Employee ID" />
+    <Label text="Employee Email" />
+    <TextField fx:id="emailEmployeeField" promptText="Enter Employee Email" />
+
+    <Label text="Employee Password" />
+    <PasswordField fx:id="passwordEmployeeField" promptText="Enter Employee Password" />
 
     <Label text="Employee Name" />
     <TextField fx:id="nameField" promptText="Enter Employee Name" />
@@ -18,5 +22,7 @@
     <Label text="Role" />
     <ComboBox fx:id="roleComboBox" promptText="Select Role" />
 
-    <Button text="Save Employee" />
+    <Label fx:id="messages" />
+
+    <Button text="Save Employee" onAction="#createEmployee" />
 </VBox>
