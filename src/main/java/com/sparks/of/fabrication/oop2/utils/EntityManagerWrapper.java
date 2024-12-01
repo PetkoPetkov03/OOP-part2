@@ -3,10 +3,12 @@ package com.sparks.of.fabrication.oop2.utils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +63,21 @@ public class EntityManagerWrapper {
         em.getTransaction().rollback();
     }
 
+    public <T, Y> Pair<Boolean, T> findEntityByVal(Class<T> tClass, Field field, Y value) {
+        try{
+            String jpql = "SELECT e FROM " + tClass.getSimpleName() + " e WHERE e." + field.getName() + " = :value";
+            TypedQuery<T> query = this.em.createQuery(jpql, tClass);
+            query.setParameter("value", value);
+
+            T entity = query.getSingleResult();
+
+            return new Pair<>(true, entity);
+        }catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return new Pair<>(false, null);
+        }
+    }
+
     public <T> boolean genEntity(T entity) {
         try {
             beginTransaction();
@@ -75,7 +92,7 @@ public class EntityManagerWrapper {
         }
     }
 
-    public <T> Pair<Boolean, T> findEntityById(Class<T> tClass, String id) {
+    public <T> Pair<Boolean, T> findEntityById(Class<T> tClass, int id) {
         try {
             T entity = em.find(tClass, id);
 

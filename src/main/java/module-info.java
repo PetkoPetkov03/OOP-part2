@@ -13,6 +13,7 @@ module com.sparks.of.fabrication.oop2 {
     requires static lombok;
 
     requires org.hibernate.orm.core;
+    requires spring.security.crypto;
 
     opens com.sparks.of.fabrication.oop2.models to org.hibernate.orm.core; // Open package for Hibernate reflection
 
