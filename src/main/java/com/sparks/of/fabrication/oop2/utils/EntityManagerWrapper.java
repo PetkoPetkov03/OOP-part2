@@ -9,7 +9,9 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EntityManagerWrapper {
@@ -75,6 +77,17 @@ public class EntityManagerWrapper {
         }catch (Exception e) {
             log.error(e.getMessage(), e);
             return new Pair<>(false, null);
+        }
+    }
+
+    public <T> List<T> findAllEntities(Class<T> tClass) {
+        try {
+            String jpql = "SELECT e FROM " + tClass.getSimpleName() + " e";
+            TypedQuery<T> query = em.createQuery(jpql, tClass);
+            return query.getResultList();
+        } catch (Exception e) {
+            log.error("Error fetching all entities for {}: {}", tClass.getSimpleName(), e.getMessage(), e);
+            return new ArrayList<>();
         }
     }
 
