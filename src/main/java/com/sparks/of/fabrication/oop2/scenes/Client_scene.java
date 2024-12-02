@@ -1,106 +1,98 @@
 package com.sparks.of.fabrication.oop2.scenes;
 
-import com.sparks.of.fabrication.oop2.users.Client;
-import com.sparks.of.fabrication.oop2.utils.Item;
-import javafx.event.ActionEvent;
+import com.sparks.of.fabrication.oop2.models.Item;
+import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
+import com.sparks.of.fabrication.oop2.Singleton;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.control.Alert;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
+import java.util.List;
 
 public class Client_scene {
+
+    @FXML
+    private TableView<Item> itemTable;
+
+    @FXML
+    private TableColumn<Item, Long> idItemColumn;
+
+    @FXML
+    private TableColumn<Item, String> nameColumn;
+
+    @FXML
+    private TableColumn<Item, String> categoryColumn;
+
+    @FXML
+    private TableColumn<Item, Double> priceColumn;
+
+    @FXML
+    private TableColumn<Item, Double> arrivalPriceColumn;
+
+    @FXML
+    private TableColumn<Item, Integer> quantityColumn;
 
     @FXML
     private TextField searchField;
 
     @FXML
-    private GridPane itemsGrid;
+    private Button showCartButton;
+
+    private ObservableList<Item> items;
+
+    private final EntityManagerWrapper entityManager = Singleton.getInstance(EntityManagerWrapper.class);
 
     @FXML
-    private Label welcomeLabel;
+    public void initialize() {
+        idItemColumn.setCellValueFactory(new PropertyValueFactory<>("idItem"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        arrivalPriceColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalPrice"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-    @FXML
-    private Button cartButton;
-
-    @FXML
-    private Button searchButton;
-
-    private Client client;
-
-    public Client_scene() {
-
+        loadItems();
     }
 
-    public void setClient(Client client) {
-        this.client = client;
-        welcomeLabel.setText("Welcome, " + client.getName() + "!");
-    }
-
-    @FXML
-    protected void filterItems() {
-        String query = searchField.getText().toLowerCase();
-
-        for (int i = 0; i < itemsGrid.getChildren().size(); i += 2) {
-            Label itemLabel = (Label) itemsGrid.getChildren().get(i);
-            String itemText = itemLabel.getText().toLowerCase();
-            boolean visible = itemText.contains(query);
-            itemLabel.setVisible(visible);
-            itemLabel.setManaged(visible);
-
-            Button addButton = (Button) itemsGrid.getChildren().get(i + 1);
-            addButton.setVisible(visible);
-            addButton.setManaged(visible);
+    private void loadItems() {
+        List<Item> itemList = entityManager.findAllEntities(Item.class);
+        if (itemList != null) {
+            items = FXCollections.observableArrayList(itemList);
+            itemTable.setItems(items);
         }
     }
 
     @FXML
-    protected void addToCart(ActionEvent event) {
-        Button clickedButton = (Button) event.getSource();
-        int rowIndex = GridPane.getRowIndex(clickedButton);
-        String itemName = getItemNameByRowIndex(rowIndex);
-        Item item = getItemByID(itemName);
+    private void showCart() {
+        try {
+            SceneLoader sceneLoader = new SceneLoader();
+            //Cart_scene to be added later
+            sceneLoader.loadScene("scenes/cart_scene.fxml", 500, 500, "Cart", true, new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        if (item != null) {
-            client.addItem(item);
-            showAlert(item.getName() + " has been added to your cart.");
+    @FXML
+    private void search() {
+        String searchText = searchField.getText().toLowerCase();
+
+        if (searchText.isEmpty()) {
+            itemTable.setItems(items);
         } else {
-            showAlert("Item could not be found.");
+            ObservableList<Item> filteredItems = FXCollections.observableArrayList();
+            for (Item item : items) {
+                if (item.getName().toLowerCase().contains(searchText) || item.getCategory().getCategory().toLowerCase().contains(searchText)) {
+                    filteredItems.add(item);
+                }
+            }
+            itemTable.setItems(filteredItems);
         }
-    }
-
-    private String getItemNameByRowIndex(int rowIndex) {
-        Label itemLabel = (Label) itemsGrid.getChildren()
-                .stream()
-                .filter(node -> GridPane.getRowIndex(node) == rowIndex
-                        && GridPane.getColumnIndex(node) == 0)
-                .findFirst()
-                .orElse(null);
-
-        if (itemLabel != null) {
-            return itemLabel.getText().split(" - ")[0];
-        }
-        return null;
-    }
-
-    private Item getItemByID(String name) {
-        // Placeholder for item retrieval logic
-        return null;
-    }
-
-    @FXML
-    protected void showCart() {
-        StringBuilder cartContents = new StringBuilder("Cart Contents:\n");
-        client.getCart().forEach(item -> cartContents.append(item.getName()).append("\n"));
-        showAlert(cartContents.toString());
-    }
-
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }
