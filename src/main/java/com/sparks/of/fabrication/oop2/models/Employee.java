@@ -29,6 +29,6 @@ public class Employee {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private Role role;
+    private RoleModel role;
 }
 
