@@ -37,6 +37,7 @@ public class Main_scene {
                 loader.loadScene("scenes/manager_scene.fxml",500,500,"Manager",true,new Stage());
             }
             loader.loadScene("scenes/client_scene.fxml", 500, 500, "Client", true, new Stage());
+            loader.loadScene("scenes/invoiceStore_scene.fxml", 500, 500, "InvoiceStore", true, new Stage());
             username.getScene().getWindow().hide();
         }catch(Exception e) {
             log.error(e.getMessage());

@@ -17,12 +17,13 @@ public class Administrator_scene {
     private Button btnCheckout;
 
     private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
-    private SceneLoader sceneLoader = Singleton.getInstance(SceneLoader.class);
+
 
     @FXML
     private void handleInventory() {
         System.out.println("Managing Inventory...");
         try {
+            SceneLoader sceneLoader = new SceneLoader();
             sceneLoader.loadScene("scenes/inventory_scene.fxml", 500, 500, "Inventory", true, new Stage());
         }catch (Exception e) {
             e.printStackTrace();
@@ -33,6 +34,7 @@ public class Administrator_scene {
     private void handleCreateEmployee() {
         System.out.println("Creating Employee...");
         try {
+            SceneLoader sceneLoader = new SceneLoader();
             sceneLoader.loadScene("scenes/createEmployee_scene.fxml", 500, 500, "Create Employee", true, new Stage());
         }catch (Exception e) {
             e.printStackTrace();

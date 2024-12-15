@@ -54,8 +54,8 @@ public class Application extends javafx.application.Application {
     }
 
     public static void main(String[] args) throws NoSuchFieldException {
-        setupDB();
         launch();
+        setupDB();
         exit();
     }
 }
