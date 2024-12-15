@@ -22,7 +22,7 @@ public class Application extends javafx.application.Application {
     private static final Logger log = LogManager.getLogger(Application.class);
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, NoSuchFieldException {
         SceneLoader sceneLoader = new SceneLoader();
         sceneLoader.loadScene("scenes/main_scene.fxml",450, 240,"Main",false,stage);
     }

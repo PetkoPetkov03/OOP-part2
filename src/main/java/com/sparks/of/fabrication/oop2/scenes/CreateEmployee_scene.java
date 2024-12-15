@@ -28,12 +28,14 @@ public class CreateEmployee_scene {
     private final EntityManagerWrapper entityManager = Singleton.getInstance(EntityManagerWrapper.class);
 
     private final Validation userValidation = new UserValidation();
+    List<String> inputs;
+    List<ValidationTypes> validationTypes;
 
     public void initialize() {
-      
-        List<String> inputs = new ArrayList<>();
 
-        List<ValidationTypes> validationTypes = new ArrayList<>(List.of(new ValidationTypes[]{ValidationTypes.EMAIL, ValidationTypes.PASSWORD}));
+        inputs = new ArrayList<>();
+
+        validationTypes = new ArrayList<>(List.of(new ValidationTypes[]{ValidationTypes.EMAIL, ValidationTypes.PASSWORD}));
         roleComboBox.setItems(FXCollections.observableArrayList(Role.values()));
         System.out.println(Arrays.toString(Role.values()));
     }
