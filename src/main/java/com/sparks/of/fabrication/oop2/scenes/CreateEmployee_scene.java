@@ -34,6 +34,12 @@ public class CreateEmployee_scene {
         List<String> inputs = new ArrayList<>();
 
         List<ValidationTypes> validationTypes = new ArrayList<>(List.of(new ValidationTypes[]{ValidationTypes.EMAIL, ValidationTypes.PASSWORD}));
+        roleComboBox.setItems(FXCollections.observableArrayList(Role.values()));
+        System.out.println(Arrays.toString(Role.values()));
+    }
+
+    public void createEmployee() throws NoSuchFieldException, RuntimeException {
+        StringBuilder builder = new StringBuilder();
 
         if(entityManager == null) {
             log.error("Entity manager wasn't initialized! {}", CreateEmployee_scene.class);
