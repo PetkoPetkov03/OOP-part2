@@ -30,20 +30,7 @@ public class CreateEmployee_scene {
     private final Validation userValidation = new UserValidation();
 
     public void initialize() {
-        roleComboBox.setItems(FXCollections.observableArrayList(Role.values()));
-        System.out.println(Arrays.toString(Role.values()));
-    }
-
-    public void createEmployee() throws NoSuchFieldException, RuntimeException {
-        StringBuilder builder = new StringBuilder();
-
-        if(passwordEmployeeField.getText().isEmpty() || emailEmployeeField.getText().isEmpty()
-                || nameField.getText().isEmpty() || roleComboBox.getValue() == null) {
-            builder.append("field must not be empty!\n");
-            messages.setText(builder.toString());
-            return;
-        }
-
+      
         List<String> inputs = new ArrayList<>();
 
         List<ValidationTypes> validationTypes = new ArrayList<>(List.of(new ValidationTypes[]{ValidationTypes.EMAIL, ValidationTypes.PASSWORD}));
@@ -65,6 +52,7 @@ public class CreateEmployee_scene {
         if(response.x()) {
             String salt = BCrypt.gensalt(13);
             String hashedPassword = BCrypt.hashpw(passwordEmployeeField.getText(), salt);
+
             RoleModel role = entityManager.findEntityByVal(RoleModel.class, RoleModel.class.getDeclaredField("role"), roleComboBox.getValue()).y();
 
             Employee employee = new Employee();
