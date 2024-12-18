@@ -8,7 +8,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
-import java.util.Date;
+import java.sql.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -38,5 +38,8 @@ public class InvoiceStore {
 
     @Column(name = "date")
     private Date date;
+
+    @Column(name = "status")
+    private Boolean status;
 }
 

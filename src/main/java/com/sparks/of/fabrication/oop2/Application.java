@@ -20,11 +20,10 @@ public class Application extends javafx.application.Application {
     private static final EntityManagerWrapper entityManager =
             Singleton.getInstance(EntityManagerWrapper.class, new EntityManagerWrapper(env)).y();
     private static final Logger log = LogManager.getLogger(Application.class);
-
+    private static final SceneLoader loader = Singleton.getInstance(SceneLoader.class, new SceneLoader()).y();
     @Override
     public void start(Stage stage) throws IOException, NoSuchFieldException {
-        SceneLoader sceneLoader = new SceneLoader();
-        sceneLoader.loadScene("scenes/main_scene.fxml",450, 240,"Main",false,stage);
+        loader.loadScene("scenes/main_scene.fxml",450, 240,"Main",false,stage);
     }
 
     private static void setupDB() throws NoSuchFieldException {

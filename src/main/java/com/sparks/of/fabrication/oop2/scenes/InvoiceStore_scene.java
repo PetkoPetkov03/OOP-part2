@@ -35,6 +35,7 @@ public class InvoiceStore_scene {
     private Button deleteButton;
 
     private EntityManagerWrapper entityManager = Singleton.getInstance(EntityManagerWrapper.class);
+    private SceneLoader loader = Singleton.getInstance(SceneLoader.class);
     private ObservableList<InvoiceStore> invoiceList = FXCollections.observableArrayList();
 
     @FXML
@@ -46,10 +47,36 @@ public class InvoiceStore_scene {
         });
         employeeIdColumn.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
 
+        // Add mouse click event listener on the entire TableView
+        invoiceTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Check for double-click
+                TablePosition<InvoiceStore, ?> pos = invoiceTable.getSelectionModel().getSelectedCells().get(0); // Get selected cell
+
+                int colIndex = pos.getColumn(); // Get the column index of the clicked cell
+                if (colIndex == 2) { // Check if the clicked column is "nomenclatureIdColumn" (index 2)
+                    InvoiceStore selectedInvoice = invoiceTable.getSelectionModel().getSelectedItem();
+                    if (selectedInvoice != null) {
+                        Long nomenclatureId = selectedInvoice.getNomenclatura().getIdNomenclature();
+                        int nomenclatureIdInt = nomenclatureId.intValue();
+                        Nomenclature nomenclature = entityManager.findEntityById(Nomenclature.class, nomenclatureIdInt).y();
+                        if (nomenclature != null) {
+                            try {
+                                loadNomenclatureScene(nomenclature);  // Load the Nomenclature scene
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Load data into the table
         List<InvoiceStore> invoices = entityManager.findAllEntities(InvoiceStore.class);
         invoiceList.setAll(invoices);
         invoiceTable.setItems(invoiceList);
     }
+
 
     @FXML
     private void AddInvoice() {
@@ -92,9 +119,8 @@ public class InvoiceStore_scene {
 
 
     private void loadNomenclatureScene(Nomenclature nomenclature) throws IOException {
-        SceneLoader sceneLoader = new SceneLoader();
         //Need to add access to id of nomenclature
-        sceneLoader.loadScene("scenes/nomenclature_scene.fxml", 500, 500, "Nomenclature", true, new Stage());
+        loader.loadScene("scenes/nomenclature_scene.fxml", 500, 500, "Nomenclature", true, new Stage());
         System.out.println("Loading Nomenclature scene for: " + nomenclature.getIdNomenclature());
     }
 }
