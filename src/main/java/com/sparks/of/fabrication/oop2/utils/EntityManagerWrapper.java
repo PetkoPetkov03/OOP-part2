@@ -173,6 +173,27 @@ public class EntityManagerWrapper {
             return false;
         }
     }
+    public <T, Y> Pair<Boolean, List<T>> findEntitiesWithJoins(Class<T> tClass, Field field, Y value, List<String> joinFields) {
+        try {
+            StringBuilder jpql = new StringBuilder("SELECT e FROM " + tClass.getSimpleName() + " e");
+
+            for (String joinField : joinFields) {
+                jpql.append(" JOIN e.").append(joinField);
+            }
+
+            jpql.append(" WHERE e.").append(field.getName()).append(" = :value");
+
+            TypedQuery<T> query = this.em.createQuery(jpql.toString(), tClass);
+            query.setParameter("value", value);
+
+            List<T> resultList = query.getResultList();
+            return new Pair<>(true, resultList);
+        } catch (Exception e) {
+            log.error("Error executing query with joins: {}", e.getMessage(), e);
+            return new Pair<>(false, null);
+        }
+    }
+
 
     public boolean cleanUp() {
         try {
@@ -189,6 +210,7 @@ public class EntityManagerWrapper {
             return false;
         }
     }
+
 
 }
 

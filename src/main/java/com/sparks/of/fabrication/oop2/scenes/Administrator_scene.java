@@ -17,6 +17,7 @@ public class Administrator_scene {
     private Button btnCheckout;
 
     private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
+
     private SceneLoader sceneLoader = Singleton.getInstance(SceneLoader.class);
 
     @FXML

@@ -1,7 +1,9 @@
 package com.sparks.of.fabrication.oop2.scenes;
 
+import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.models.Employee;
+import jakarta.persistence.EntityManager;
 import javafx.fxml.FXML;
-import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -10,9 +12,19 @@ import org.apache.logging.log4j.Logger;
 
 import org.apache.logging.log4j.LogManager;
 
+import com.sparks.of.fabrication.oop2.utils.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class Main_scene {
 
     private final Logger log = LogManager.getLogger(Main_scene.class);
+    private final SceneLoader loader = Singleton.getInstance(SceneLoader.class);
+    private final EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
+    private static Employee loggedInEmployee = Singleton.getInstance(Employee.class);
+
     @FXML
     private TextField username;
 
@@ -21,27 +33,43 @@ public class Main_scene {
 
     @FXML
     protected void checkCredentials() {
-            String user = username.getText();
-            String password = passwordField.getText();
+        String user = username.getText();
+        String password = passwordField.getText();
 
-            if(user.isEmpty() || password.isEmpty()) {
-                showAlert("Enter both user and password");
-            }
+        if (user.isEmpty() || password.isEmpty()) {
+            showAlert("Enter both user and password");
+        }
 
         try {
-            SceneLoader loader = new SceneLoader();
-            if(user.equals("admin") && password.equals("admin")) {
-                loader.loadScene("scenes/administrator_scene.fxml",500,500,"Admin",true,new Stage());
+            Pair<Boolean, Employee> employeeResult = entityManagerWrapper.findEntityByVal(Employee.class,
+                    Employee.class.getDeclaredField("email"), user);
+
+            if (employeeResult.x()) {
+                loggedInEmployee = employeeResult.y();
+
+                if (BCrypt.checkpw(password, loggedInEmployee.getPassword())) {
+                    String roleName = loggedInEmployee.getRole().getRole().toString();
+
+                    if ("admin".equalsIgnoreCase(roleName)) {
+                        loader.loadScene("scenes/administrator_scene.fxml", 500, 500, "Admin", true, new Stage());
+                    } else {
+                        loader.loadScene("scenes/manager_scene.fxml", 500, 500, "Manager", true, new Stage());
+                    }
+
+                    username.getScene().getWindow().hide();
+                } else {
+                    showAlert("Invalid password");
+                }
+            } else {
+                showAlert("User not found");
             }
-            if(user.equals("manager") && password.equals("manager")) {
-                loader.loadScene("scenes/manager_scene.fxml",500,500,"Manager",true,new Stage());
-            }
-            loader.loadScene("scenes/client_scene.fxml", 500, 500, "Client", true, new Stage());
-            username.getScene().getWindow().hide();
-        }catch(Exception e) {
-            log.error(e.getMessage());
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            showAlert("An error occurred during login");
         }
     }
+
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -51,3 +79,4 @@ public class Main_scene {
         alert.showAndWait();
     }
 }
+

@@ -19,14 +19,4 @@ public class ClientModel {
     @ToString.Include
     private String name;
 
-    @Column(nullable = false)
-    @ToString.Include
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
-    @JoinColumn(nullable = false)
-    @OneToOne(cascade = CascadeType.ALL)
-    private CartModel cart;
 }
