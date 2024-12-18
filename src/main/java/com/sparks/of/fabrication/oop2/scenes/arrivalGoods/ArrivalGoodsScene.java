@@ -1,10 +1,7 @@
 package com.sparks.of.fabrication.oop2.scenes.arrivalGoods;
 
 import com.sparks.of.fabrication.oop2.Singleton;
-import com.sparks.of.fabrication.oop2.models.InvoiceStore;
-import com.sparks.of.fabrication.oop2.models.Item;
-import com.sparks.of.fabrication.oop2.models.Nomenclature;
-import com.sparks.of.fabrication.oop2.models.NomenclatureDetails;
+import com.sparks.of.fabrication.oop2.models.*;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.utils.Pair;
 import javafx.collections.FXCollections;
@@ -51,6 +48,7 @@ public class ArrivalGoodsScene {
     private ObservableList<Item> itemList;
     private ArrivalGoodsService arrivalGoodsService;
     private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
+    private Employee loggedInEmployee = Singleton.getInstance(Employee.class);
     @FXML
     private void initialize() {
         arrivalGoodsService = new ArrivalGoodsService();
@@ -132,7 +130,10 @@ public class ArrivalGoodsScene {
 
     @FXML
     private void handleNewButtonAction(ActionEvent event) {
-        System.out.println("New button clicked.");
+        Nomenclature nomenclature = new Nomenclature();
+        nomenclatureList.add(nomenclature);
+        currentIndex = nomenclatureList.size() - 1;
+        loadItemsForNomenclature(currentIndex);
     }
 
     @FXML
@@ -143,57 +144,45 @@ public class ArrivalGoodsScene {
     @FXML
     private void handleSaveButtonAction(ActionEvent event) {
         try {
-            // Retrieve necessary values from the UI
             Integer invoiceNumber = Integer.parseInt(txtDocumentNumber.getText());
-            Nomenclature currentNomenclature = nomenclatureList.get(currentIndex); // Assuming currentIndex is set properly
+            Nomenclature currentNomenclature = nomenclatureList.get(currentIndex);
 
-            // Get the selected status from cmbStatus combobox
             String status = cmbStatus.getValue();
 
-            // If status is "Открито", set the status of InvoiceStore to false (open)
-            boolean isInvoiceClosed = "Закрито".equals(status); // true if "Закрито", false if "Открито"
-
-            // Create or update the InvoiceStore entity
             if ("Открито".equals(status)) {
-                // Create a new InvoiceStore if it's not found
                 InvoiceStore invoiceStore = new InvoiceStore();
                 invoiceStore.setNomenclatura(currentNomenclature);
-                //invoiceStore.setEmployee(getLoggedInEmployee()); // You need to implement this method to fetch logged-in employee
+                invoiceStore.setEmployee(loggedInEmployee);
                 invoiceStore.setNumber(invoiceNumber);
-                invoiceStore.setDate(java.sql.Date.valueOf(dateDocument.getValue())); // Use DatePicker value
-                invoiceStore.setStatus(false); // Invoice is open, status = false
-                entityManagerWrapper.genEntity(invoiceStore); // Save the new InvoiceStore entity
+                invoiceStore.setDate(java.sql.Date.valueOf(dateDocument.getValue()));
+                invoiceStore.setStatus(false);
+                entityManagerWrapper.genEntity(invoiceStore);
             } else if ("Закрито".equals(status)) {
-                // If status is "Закрито", try to find existing InvoiceStore by number
                 Pair<Boolean, InvoiceStore> result = entityManagerWrapper.findEntityById(InvoiceStore.class, invoiceNumber);
                 InvoiceStore existingInvoiceStore = result.x() ? result.y() : null;
 
                 if (existingInvoiceStore != null) {
-                    // Update the existing InvoiceStore if found
                     existingInvoiceStore.setNomenclatura(currentNomenclature);
-                  //  existingInvoiceStore.setEmployee(getLoggedInEmployee());
+                    existingInvoiceStore.setEmployee(loggedInEmployee);
                     existingInvoiceStore.setNumber(invoiceNumber);
                     existingInvoiceStore.setDate(java.sql.Date.valueOf(dateDocument.getValue()));
-                    existingInvoiceStore.setStatus(true); // Invoice is closed, status = true
+                    existingInvoiceStore.setStatus(true);
 
-                    entityManagerWrapper.genEntity(existingInvoiceStore); // Update the existing InvoiceStore
+                    entityManagerWrapper.genEntity(existingInvoiceStore);
                 } else {
-                    // If no InvoiceStore found, handle as an error or log it
                     System.err.println("InvoiceStore with number " + invoiceNumber + " not found.");
                 }
             }
 
-            // Handle NomenclatureDetails (the items associated with the invoice)
             for (Item item : itemList) {
                 NomenclatureDetails details = new NomenclatureDetails();
                 details.setNomenclature(currentNomenclature);
                 details.setItem(item);
-                details.setItemQuantity(item.getQuantity()); // Assuming Item has a getQuantity method
-                details.setItemPrice(item.getPrice()); // Assuming Item has a getPrice method
-                entityManagerWrapper.genEntity(details); // Save NomenclatureDetails
+                details.setItemQuantity(item.getQuantity());
+                details.setItemPrice(item.getPrice());
+                entityManagerWrapper.genEntity(details);
             }
 
-            // Inform the user that the save was successful
             System.out.println("Data saved successfully!");
 
         } catch (Exception e) {

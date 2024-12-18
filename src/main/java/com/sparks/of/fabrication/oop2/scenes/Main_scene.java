@@ -23,7 +23,7 @@ public class Main_scene {
     private final Logger log = LogManager.getLogger(Main_scene.class);
     private final SceneLoader loader = Singleton.getInstance(SceneLoader.class);
     private final EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
-    private final UserValidation userValidation = new UserValidation();
+    private static Employee loggedInEmployee = Singleton.getInstance(Employee.class);
 
     @FXML
     private TextField username;
@@ -45,10 +45,10 @@ public class Main_scene {
                     Employee.class.getDeclaredField("email"), user);
 
             if (employeeResult.x()) {
-                Employee employee = employeeResult.y();
+                loggedInEmployee = employeeResult.y();
 
-                if (BCrypt.checkpw(password, employee.getPassword())) {
-                    String roleName = employee.getRole().getRole().toString();
+                if (BCrypt.checkpw(password, loggedInEmployee.getPassword())) {
+                    String roleName = loggedInEmployee.getRole().getRole().toString();
 
                     if ("admin".equalsIgnoreCase(roleName)) {
                         loader.loadScene("scenes/administrator_scene.fxml", 500, 500, "Admin", true, new Stage());

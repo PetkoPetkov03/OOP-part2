@@ -48,6 +48,8 @@ public class Client_scene {
 
     private final EntityManagerWrapper entityManager = Singleton.getInstance(EntityManagerWrapper.class);
 
+    private SceneLoader sceneLoader = Singleton.getInstance(SceneLoader.class)
+            ;
     @FXML
     public void initialize() {
         idItemColumn.setCellValueFactory(new PropertyValueFactory<>("idItem"));
@@ -77,7 +79,6 @@ public class Client_scene {
     @FXML
     private void showCart() {
         try {
-            SceneLoader sceneLoader = new SceneLoader();
             //Cart_scene to be added later
             sceneLoader.loadScene("scenes/cart_scene.fxml", 500, 500, "Cart", true, new Stage());
         } catch (Exception e) {
