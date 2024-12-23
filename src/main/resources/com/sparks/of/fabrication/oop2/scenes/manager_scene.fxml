@@ -26,6 +26,8 @@
                   <Menu text="View">
                      <MenuItem text="Welcome Page" onAction="#showWelcomePage" />
                      <MenuItem text="Take in Arrival Goods" onAction="#showArrivalGoods" />
+                     <MenuItem text="Inventory" onAction="#showInventory" />
+                     <MenuItem text="Invoices" onAction="#showInvoices" />
                      <MenuItem text="Cash Register" onAction="#showCashRegister" />
                      <MenuItem text="Employees" onAction="#showEmployees" />
                   </Menu>

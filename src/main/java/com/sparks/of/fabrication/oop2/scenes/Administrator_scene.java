@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class Administrator_scene {
     @FXML
     private Button btnInventory;
@@ -41,8 +43,7 @@ public class Administrator_scene {
     }
 
     @FXML
-    private void handleCheckout() {
-        System.out.println("Processing Checkout...");
-        //load scene
+    private void handleCheckout() throws IOException {
+        sceneLoader.loadScene("scenes/createCashRegister.fxml",500,500,"Create Cash Register",true,new Stage());
     }
 }

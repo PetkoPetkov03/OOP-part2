@@ -173,6 +173,19 @@ public class EntityManagerWrapper {
             return false;
         }
     }
+    public <T> boolean updateEntity(T entity) {
+        try {
+            beginTransaction();
+            em.merge(entity);
+            commitTransaction();
+            log.info("Updated entity: {}", entity);
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            rollbackTransaction();
+            return false;
+        }
+    }
     public <T, Y> Pair<Boolean, List<T>> findEntitiesWithJoins(Class<T> tClass, Field field, Y value, List<String> joinFields) {
         try {
             StringBuilder jpql = new StringBuilder("SELECT e FROM " + tClass.getSimpleName() + " e");

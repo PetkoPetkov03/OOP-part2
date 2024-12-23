@@ -46,7 +46,7 @@ public class Main_scene {
 
             if (employeeResult.x()) {
                 loggedInEmployee = employeeResult.y();
-
+                Singleton.getInstance(Employee.class, loggedInEmployee);
                 if (BCrypt.checkpw(password, loggedInEmployee.getPassword())) {
                     String roleName = loggedInEmployee.getRole().getRole().toString();
 

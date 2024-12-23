@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.lang.reflect.Field;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class ArrivalGoodsScene {
     @FXML private TextField txtSupplier;
     @FXML private Label lblEmployee;
     @FXML private DatePicker lblSystemDate;
-    @FXML private ComboBox<String> cmbStatus;
+    @FXML private ComboBox<ArrivalState> cmbStatus;
     @FXML private Button btnFirst;
     @FXML private Button btnPrevious;
     @FXML private Button btnNext;
@@ -77,7 +78,9 @@ public class ArrivalGoodsScene {
         lblSystemDate.setValue(LocalDate.now());
         cmbDocumentType.setItems(FXCollections.observableArrayList("Стокова разписка", "Фактура"));
         cmbPaymentType.setItems(FXCollections.observableArrayList("В брой", "Карта"));
-        cmbStatus.setItems(FXCollections.observableArrayList("Открита", "Закрита"));
+
+        cmbStatus.setItems(FXCollections.observableArrayList(ArrivalState.values()));
+        cmbStatus.setValue(ArrivalState.Open);
     }
 
     private void loadItemsFromDatabase(LocalDate selectedDate) {
@@ -143,52 +146,56 @@ public class ArrivalGoodsScene {
 
     @FXML
     private void handleSaveButtonAction(ActionEvent event) {
-        try {
-            Integer invoiceNumber = Integer.parseInt(txtDocumentNumber.getText());
-            Nomenclature currentNomenclature = nomenclatureList.get(currentIndex);
+        Integer invoiceNumber = currentIndex;
+        Nomenclature currentNomenclature = nomenclatureList.get(currentIndex);
 
-            String status = cmbStatus.getValue();
+        currentNomenclature.setEmployee(loggedInEmployee);
+        currentNomenclature.setSuppliers(entityManagerWrapper.findEntityById(Suppliers.class, 1).y());
 
-            if ("Открито".equals(status)) {
-                InvoiceStore invoiceStore = new InvoiceStore();
-                invoiceStore.setNomenclatura(currentNomenclature);
-                invoiceStore.setEmployee(loggedInEmployee);
-                invoiceStore.setNumber(invoiceNumber);
-                invoiceStore.setDate(java.sql.Date.valueOf(dateDocument.getValue()));
-                invoiceStore.setStatus(false);
-                entityManagerWrapper.genEntity(invoiceStore);
-            } else if ("Закрито".equals(status)) {
-                Pair<Boolean, InvoiceStore> result = entityManagerWrapper.findEntityById(InvoiceStore.class, invoiceNumber);
-                InvoiceStore existingInvoiceStore = result.x() ? result.y() : null;
+        entityManagerWrapper.genEntity(currentNomenclature);
 
-                if (existingInvoiceStore != null) {
-                    existingInvoiceStore.setNomenclatura(currentNomenclature);
-                    existingInvoiceStore.setEmployee(loggedInEmployee);
-                    existingInvoiceStore.setNumber(invoiceNumber);
-                    existingInvoiceStore.setDate(java.sql.Date.valueOf(dateDocument.getValue()));
-                    existingInvoiceStore.setStatus(true);
+        ArrivalState status = cmbStatus.getValue();
 
-                    entityManagerWrapper.genEntity(existingInvoiceStore);
-                } else {
-                    System.err.println("InvoiceStore with number " + invoiceNumber + " not found.");
+        if (status.equals(ArrivalState.Closed)) {
+            InvoiceStore invoiceStore = new InvoiceStore();
+            invoiceStore.setNomenclatura(currentNomenclature);
+            invoiceStore.setEmployee(loggedInEmployee);
+            invoiceStore.setNumber(invoiceNumber);
+            invoiceStore.setDate(Date.valueOf(LocalDate.now()));
+            invoiceStore.setStatus(true);
+
+            entityManagerWrapper.genEntity(invoiceStore);
+
+            for (Item item : arrivalTable.getItems()) {
+                Item dbItem = entityManagerWrapper.findEntityById(Item.class, item.getIdItem().intValue()).y();
+
+                Double newArrivalPrice = colArrivalPrice.getCellObservableValue(item).getValue();
+                Double newSellingPrice = colSellingPrice.getCellObservableValue(item).getValue();
+                Integer newTableQuantity = colQuantity.getCellObservableValue(item).getValue();
+
+                boolean priceChanged = !dbItem.getArrivalPrice().equals(newArrivalPrice) || !dbItem.getPrice().equals(newSellingPrice);
+
+                if (priceChanged) {
+                    dbItem.setArrivalPrice(newArrivalPrice);
+                    dbItem.setPrice(newSellingPrice);
                 }
+
+                dbItem.setQuantity(dbItem.getQuantity() + (newTableQuantity != null ? newTableQuantity : 0));
+
+                entityManagerWrapper.genEntity(dbItem);
+
+                NomenclatureDetails nomenclatureDetails = new NomenclatureDetails();
+                nomenclatureDetails.setNomenclature(currentNomenclature);
+                nomenclatureDetails.setItem(dbItem);
+                nomenclatureDetails.setItemQuantity(newTableQuantity != null ? newTableQuantity : 0);
+                nomenclatureDetails.setItemPrice(newArrivalPrice);
+
+                entityManagerWrapper.genEntity(nomenclatureDetails);
             }
 
-            for (Item item : itemList) {
-                NomenclatureDetails details = new NomenclatureDetails();
-                details.setNomenclature(currentNomenclature);
-                details.setItem(item);
-                details.setItemQuantity(item.getQuantity());
-                details.setItemPrice(item.getPrice());
-                entityManagerWrapper.genEntity(details);
-            }
 
-            System.out.println("Data saved successfully!");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error saving data: " + e.getMessage());
         }
+
     }
 
     @FXML

@@ -16,8 +16,6 @@ public class Manager_scene {
     @FXML
     private ImageView notificationIcon;
 
-    @FXML
-    private BorderPane mainPane;
 
     private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
     private SceneLoader loader = Singleton.getInstance(SceneLoader.class);
@@ -35,14 +33,15 @@ public class Manager_scene {
         }
     }
 
+
     @FXML
     private void handleExit() {
         System.exit(0);
     }
 
     @FXML
-    private void showWelcomePage() {
-        mainPane.setCenter(new javafx.scene.control.Label("Welcome Page"));
+    private void showWelcomePage() throws IOException {
+        loader.loadScene("scenes/welcomePage.fxml",500,500,"Welcome",true,new Stage());
     }
 
     @FXML
@@ -51,13 +50,22 @@ public class Manager_scene {
     }
 
     @FXML
-    private void showCashRegister() {
-        mainPane.setCenter(new javafx.scene.control.Label("Cash Register Section"));
+    private void showInventory() throws IOException {
+        loader.loadScene("scenes/inventory_scene.fxml",500,500,"Inventory",true,new Stage());
     }
 
     @FXML
-    private void showEmployees() {
-        mainPane.setCenter(new javafx.scene.control.Label("Employees Section"));
+    private void showInvoices() throws IOException {
+        loader.loadScene("scenes/invoiceStore_scene.fxml",500,500,"Invoice",true,new Stage());
+    }
+    @FXML
+    private void showCashRegister() throws IOException {
+        loader.loadScene("scenes/createCashRegister.fxml",500,500,"Checkout",true,new Stage());
+    }
+
+    @FXML
+    private void showEmployees() throws IOException {
+        loader.loadScene("scenes/employees.fxml",500,500,"Employees",true,new Stage());
     }
 
     @FXML
