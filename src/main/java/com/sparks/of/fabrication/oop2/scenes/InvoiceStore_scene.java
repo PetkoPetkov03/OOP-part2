@@ -40,12 +40,12 @@ public class InvoiceStore_scene {
 
     @FXML
     public void initialize() {
-        invoiceIdColumn.setCellValueFactory(new PropertyValueFactory<>("idInvoice"));
+        invoiceIdColumn.setCellValueFactory(new PropertyValueFactory<>("id_invoice"));
         invoiceDateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         nomenclatureIdColumn.setCellValueFactory(data -> {
             return new javafx.beans.property.SimpleStringProperty(data.getValue().getNomenclatura().getIdNomenclature().toString());
         });
-        employeeIdColumn.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
+        employeeIdColumn.setCellValueFactory(new PropertyValueFactory<>("id_employee"));
 
         // Add mouse click event listener on the entire TableView
         invoiceTable.setOnMouseClicked(event -> {

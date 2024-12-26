@@ -96,8 +96,6 @@
             <ComboBox fx:id="cmbStatus">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Открита" />
-                        <String fx:value="Закрита" />
                     </FXCollections>
                 </items>
             </ComboBox>
