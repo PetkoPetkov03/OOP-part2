@@ -3,7 +3,6 @@ package com.sparks.of.fabrication.oop2.scenes.arrivalGoods;
 import com.sparks.of.fabrication.oop2.Singleton;
 import com.sparks.of.fabrication.oop2.models.*;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
-import com.sparks.of.fabrication.oop2.utils.Pair;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,10 +21,10 @@ public class ArrivalGoodsScene {
     @FXML private TableColumn<Item, Long> colCode;
     @FXML private TableColumn<Item, String> colName;
     @FXML private TableColumn<Item, String> colMeasure;
-    @FXML private TableColumn<Item, Integer> colQuantity;
-    @FXML private TableColumn<Item, Double> colArrivalPrice;
-    @FXML private TableColumn<Item, Double> colMarkup;
-    @FXML private TableColumn<Item, Double> colSellingPrice;
+    @FXML private TableView<AmSData> AmS;
+    @FXML private TableColumn<AmSData, Integer> colQuantity;
+    @FXML private TableColumn<AmSData, Double> colArrivalPrice;
+    @FXML private TableColumn<AmSData, Double> colSellingPrice;
     @FXML private TextField txtServiceNumber;
     @FXML private DatePicker dateDocument;
     @FXML private TextField txtDocumentNumber;
@@ -47,15 +46,18 @@ public class ArrivalGoodsScene {
     private int currentIndex = -1;
     private List<Nomenclature> nomenclatureList;
     private ObservableList<Item> itemList;
+    ObservableList<AmSData> amsData = FXCollections.observableArrayList();
     private ArrivalGoodsService arrivalGoodsService;
     private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
     private Employee loggedInEmployee = Singleton.getInstance(Employee.class);
+
     @FXML
     private void initialize() {
         arrivalGoodsService = new ArrivalGoodsService();
         nomenclatureList = new ArrayList<>();
+        amsData = FXCollections.observableArrayList();
 
-        TableViewSetup.configureTableColumns(arrivalTable, colCode, colName, colMeasure, colQuantity, colArrivalPrice, colMarkup, colSellingPrice);
+        TableViewSetup.configureTableColumns(arrivalTable, colCode, colName, colMeasure, AmS, colQuantity, colArrivalPrice, colSellingPrice);
 
         lblSystemDate.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -64,21 +66,20 @@ public class ArrivalGoodsScene {
             }
         });
 
-        colSellingPrice.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.2));
-        colMarkup.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.1));
+        arrivalTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        AmS.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Set the width dynamically (you can adjust percentages as needed)
-        colCode.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.1));
-        colName.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.3));
-        colMeasure.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.1));
-        colQuantity.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.1));
-        colArrivalPrice.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.1));
+        colCode.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.2));
+        colName.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.5));
+        colMeasure.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.3));
 
+        colQuantity.prefWidthProperty().bind(AmS.widthProperty().multiply(0.33));
+        colArrivalPrice.prefWidthProperty().bind(AmS.widthProperty().multiply(0.33));
+        colSellingPrice.prefWidthProperty().bind(AmS.widthProperty().multiply(0.34));
 
         lblSystemDate.setValue(LocalDate.now());
         cmbDocumentType.setItems(FXCollections.observableArrayList("Стокова разписка", "Фактура"));
         cmbPaymentType.setItems(FXCollections.observableArrayList("В брой", "Карта"));
-
         cmbStatus.setItems(FXCollections.observableArrayList(ArrivalState.values()));
         cmbStatus.setValue(ArrivalState.Open);
     }
@@ -91,9 +92,16 @@ public class ArrivalGoodsScene {
         try {
             List<Item> items = arrivalGoodsService.loadItemsForNomenclature(nomenclatureList.get(currentIndex));
 
-
             itemList = FXCollections.observableArrayList(items);
             arrivalTable.setItems(itemList);
+
+            for (Item item : arrivalTable.getItems()) {
+                amsData.add(new AmSData(0, item.getArrivalPrice(), item.getPrice())); // Set quantity to 0
+            }
+
+            AmS.setItems(amsData);
+            arrivalTable.refresh();
+            AmS.refresh();
         } catch (Exception e) {
             System.err.println("Error loading items for nomenclature: " + e.getMessage());
         }
@@ -169,39 +177,44 @@ public class ArrivalGoodsScene {
             for (Item item : arrivalTable.getItems()) {
                 Item dbItem = entityManagerWrapper.findEntityById(Item.class, item.getIdItem().intValue()).y();
 
-                Double newArrivalPrice = colArrivalPrice.getCellObservableValue(item).getValue();
-                Double newSellingPrice = colSellingPrice.getCellObservableValue(item).getValue();
-                Integer newTableQuantity = colQuantity.getCellObservableValue(item).getValue();
+                int rowIndex = arrivalTable.getItems().indexOf(item);
 
-                boolean priceChanged = !dbItem.getArrivalPrice().equals(newArrivalPrice) || !dbItem.getPrice().equals(newSellingPrice);
+                if (rowIndex >= 0 && rowIndex < AmS.getItems().size()) {
+                    Double newArrivalPrice = colArrivalPrice.getCellData(rowIndex);
+                    Double newSellingPrice = colSellingPrice.getCellData(rowIndex);
+                    Integer newTableQuantity = colQuantity.getCellData(rowIndex);
 
-                if (priceChanged) {
-                    dbItem.setArrivalPrice(newArrivalPrice);
-                    dbItem.setPrice(newSellingPrice);
+                    boolean priceChanged = !dbItem.getArrivalPrice().equals(newArrivalPrice) || !dbItem.getPrice().equals(newSellingPrice);
+
+                    if (priceChanged) {
+                        dbItem.setArrivalPrice(newArrivalPrice);
+                        dbItem.setPrice(newSellingPrice);
+                    }
+                    dbItem.setQuantity(dbItem.getQuantity() + (newTableQuantity != null ? newTableQuantity : 0));
+                    entityManagerWrapper.genEntity(dbItem);
+
+                    NomenclatureDetails nomenclatureDetails = new NomenclatureDetails();
+                    nomenclatureDetails.setNomenclature(currentNomenclature);
+                    nomenclatureDetails.setItem(dbItem);
+                    nomenclatureDetails.setItemQuantity(newTableQuantity != null ? newTableQuantity : 0);
+                    nomenclatureDetails.setItemPrice(newArrivalPrice);
+
+                    entityManagerWrapper.genEntity(nomenclatureDetails);
                 }
-
-                dbItem.setQuantity(dbItem.getQuantity() + (newTableQuantity != null ? newTableQuantity : 0));
-
-                entityManagerWrapper.genEntity(dbItem);
-
-                NomenclatureDetails nomenclatureDetails = new NomenclatureDetails();
-                nomenclatureDetails.setNomenclature(currentNomenclature);
-                nomenclatureDetails.setItem(dbItem);
-                nomenclatureDetails.setItemQuantity(newTableQuantity != null ? newTableQuantity : 0);
-                nomenclatureDetails.setItemPrice(newArrivalPrice);
-
-                entityManagerWrapper.genEntity(nomenclatureDetails);
             }
-
-
         }
-
     }
+
 
     @FXML
     private void handleAddRow(ActionEvent event) {
-        Item newItem = new Item();
-        itemList.add(newItem);
+        Item item = new Item();
+        arrivalTable.getItems().add(item);
+        AmSData newEntry = new AmSData(0,0.0,0.0);
+        amsData.add(newEntry);
+        AmS.setItems(amsData);
+        AmS.refresh();
         arrivalTable.refresh();
     }
+
 }

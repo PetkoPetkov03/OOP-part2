@@ -52,9 +52,7 @@
             <Label text="Quantity:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
             <TextField fx:id="quantityField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
-            <Button text="Save" onAction="#saveOrUpdateItem" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+            <Button text="Save" fx:id="saveButton" onAction="#saveOrUpdateItem" GridPane.rowIndex="6" GridPane.columnIndex="1" />
         </GridPane>
-
-        <Button fx:id="saveButton" text="Create Item" />
     </VBox>
 </AnchorPane>

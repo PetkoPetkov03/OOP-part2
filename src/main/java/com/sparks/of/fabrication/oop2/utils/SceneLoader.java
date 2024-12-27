@@ -1,4 +1,4 @@
-package com.sparks.of.fabrication.oop2.scenes;
+package com.sparks.of.fabrication.oop2.utils;
 
 import com.sparks.of.fabrication.oop2.Application;
 import javafx.fxml.FXMLLoader;
