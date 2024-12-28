@@ -1,19 +1,15 @@
 package com.sparks.of.fabrication.oop2;
 
 import com.sparks.of.fabrication.oop2.models.RoleModel;
-import com.sparks.of.fabrication.oop2.scenes.SceneLoader;
+import com.sparks.of.fabrication.oop2.utils.SceneLoader;
 import com.sparks.of.fabrication.oop2.users.Role;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.utils.Env;
-import jakarta.persistence.EntityManager;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class Application extends javafx.application.Application {
     private static final Env env = Singleton.getInstance(Env.class, new Env()).y();

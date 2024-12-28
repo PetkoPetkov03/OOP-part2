@@ -19,7 +19,8 @@ module com.sparks.of.fabrication.oop2 {
 
     opens com.sparks.of.fabrication.oop2 to javafx.fxml;
     opens com.sparks.of.fabrication.oop2.scenes to javafx.fxml;
-    opens com.sparks.of.fabrication.oop2.scenes.arrivalGoods to javafx.fxml;
+    opens com.sparks.of.fabrication.oop2.scenes.arrivalGoods to javafx.fxml, javafx.base;
+    opens com.sparks.of.fabrication.oop2.scenes.checkout to javafx.fxml, javafx.base;
     opens com.sparks.of.fabrication.oop2.utils to javafx.fxml;
     exports com.sparks.of.fabrication.oop2;
     exports com.sparks.of.fabrication.oop2.utils;

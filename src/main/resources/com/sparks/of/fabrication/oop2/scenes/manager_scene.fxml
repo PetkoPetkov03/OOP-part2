@@ -24,7 +24,6 @@
                      <MenuItem text="Exit" onAction="#handleExit" />
                   </Menu>
                   <Menu text="View">
-                     <MenuItem text="Welcome Page" onAction="#showWelcomePage" />
                      <MenuItem text="Take in Arrival Goods" onAction="#showArrivalGoods" />
                      <MenuItem text="Inventory" onAction="#showInventory" />
                      <MenuItem text="Invoices" onAction="#showInvoices" />
@@ -36,22 +35,18 @@
                   </Menu>
                </MenuBar>
                <HBox prefHeight="100.0" prefWidth="200.0">
-                  <children>
-                     <Label text="Manager Interface" translateX="50.0" translateY="20.0">
-                        <font>
-                           <Font size="32.0" />
-                        </font>
-                     </Label>
-                  </children>
+                  <Label text="Manager Interface" translateX="50.0" translateY="20.0">
+                     <font>
+                        <Font size="32.0"/>
+                     </font>
+                  </Label>
                </HBox>
             </VBox>
          </top>
          <right>
             <VBox prefHeight="400.0" prefWidth="119.0" spacing="10.0">
-               <children>
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Checkout" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Employees" />
-               </children>
+               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Checkout"/>
+               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Employees"/>
             </VBox>
          </right>
          <bottom>

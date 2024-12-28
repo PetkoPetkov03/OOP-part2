@@ -94,6 +94,22 @@ public class EntityManagerWrapper {
             return new Pair<>(false, null);
         }
     }
+    public <T, Y> Pair<Boolean, List<T>> findEntityByValAllLikeR(Class<T> tClass, Field field, Y value) {
+        try {
+            String jpql = "SELECT e FROM " + tClass.getSimpleName() + " e WHERE e." + field.getName() + " LIKE :value";
+            TypedQuery<T> query = this.em.createQuery(jpql, tClass);
+
+            query.setParameter("value", value + "%");
+
+            List<T> entities = query.getResultList();
+
+            return new Pair<>(true, entities);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return new Pair<>(false, null);
+        }
+    }
+
 
     public <T> List<T> findAllEntities(Class<T> tClass) {
         try {

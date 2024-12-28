@@ -12,9 +12,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import lombok.Setter;
-
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -36,14 +33,14 @@ public class Inventory_scene {
     private TableColumn<Item, Integer> quantityColumn;
 
     @FXML
-    private TextField nameField, priceField, arrivalPriceField, quantityField;
+    private TextField nameField, priceField, arrivalPriceField, quantityField, searchField;
 
     @FXML
     private ComboBox<String> categoryComboBox;
+
     @FXML
     private Button saveButton;
 
-    @Setter
     private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
 
     private boolean isEditMode = false;
@@ -51,7 +48,6 @@ public class Inventory_scene {
 
     @FXML
     public void initialize() {
-        // Set up table columns
         idItemColumn.setCellValueFactory(new PropertyValueFactory<>("idItem"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         categoryColumn.setCellValueFactory(cellData ->
@@ -61,11 +57,8 @@ public class Inventory_scene {
         arrivalPriceColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalPrice"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        // Load data into the table
-        loadItems();
         loadCategories();
 
-        // Add listener for table selection
         inventoryTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 isEditMode = true;
@@ -77,7 +70,13 @@ public class Inventory_scene {
             }
         });
 
-        // Button action
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                loadItems(newValue);
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException(e);
+            }
+        });
         saveButton.setOnAction(event -> {
             try {
                 saveOrUpdateItem();
@@ -85,10 +84,13 @@ public class Inventory_scene {
                 throw new RuntimeException(e);
             }
         });
+        searchField.setText(" ");
+        searchField.setText("");
     }
 
-    private void loadItems() {
-        List<Item> itemList = entityManagerWrapper.findAllEntities(Item.class);
+    private void loadItems(String text) throws NoSuchFieldException {
+        Field field = Item.class.getDeclaredField("name");
+        List<Item> itemList = entityManagerWrapper.findEntityByValAllLikeR(Item.class,field,text).y();
         ObservableList<Item> items = FXCollections.observableArrayList(itemList);
         inventoryTable.setItems(items);
     }
@@ -157,7 +159,7 @@ public class Inventory_scene {
 
         boolean success = entityManagerWrapper.genEntity(newItem);
         if (success) {
-            loadItems();
+            searchField.setText("");
             clearFields();
         } else {
             System.out.println("Error creating new item.");

@@ -1,14 +1,18 @@
 package com.sparks.of.fabrication.oop2.scenes;
 
 import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.models.Employee;
 import com.sparks.of.fabrication.oop2.models.InvoiceStore;
 import com.sparks.of.fabrication.oop2.models.Nomenclature;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
+import com.sparks.of.fabrication.oop2.utils.Pair;
+import com.sparks.of.fabrication.oop2.utils.SceneLoader;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -19,14 +23,18 @@ public class InvoiceStore_scene {
 
     @FXML
     private TableView<InvoiceStore> invoiceTable;
+
     @FXML
     private TableColumn<InvoiceStore, Long> invoiceIdColumn;
+
     @FXML
-    private TableColumn<InvoiceStore, java.util.Date> invoiceDateColumn;
+    private TableColumn<InvoiceStore, Long> nomenclatureIdColumn;
+
     @FXML
-    private TableColumn<InvoiceStore, String> nomenclatureIdColumn;
+    private TableColumn<InvoiceStore, String> dateColumn;
+
     @FXML
-    private TableColumn<InvoiceStore, Long> employeeIdColumn;
+    private TableColumn<InvoiceStore, String> employeeNameColumn;
     @FXML
     private Button addButton;
     @FXML
@@ -34,47 +42,56 @@ public class InvoiceStore_scene {
     @FXML
     private Button deleteButton;
 
-    private EntityManagerWrapper entityManager = Singleton.getInstance(EntityManagerWrapper.class);
+    private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
     private SceneLoader loader = Singleton.getInstance(SceneLoader.class);
     private ObservableList<InvoiceStore> invoiceList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        invoiceIdColumn.setCellValueFactory(new PropertyValueFactory<>("id_invoice"));
-        invoiceDateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        nomenclatureIdColumn.setCellValueFactory(data -> {
-            return new javafx.beans.property.SimpleStringProperty(data.getValue().getNomenclatura().getIdNomenclature().toString());
-        });
-        employeeIdColumn.setCellValueFactory(new PropertyValueFactory<>("id_employee"));
+        // Set up columns
+        invoiceIdColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getIdInvoice()) // Invoice ID
+        );
 
-        // Add mouse click event listener on the entire TableView
-        invoiceTable.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) { // Check for double-click
-                TablePosition<InvoiceStore, ?> pos = invoiceTable.getSelectionModel().getSelectedCells().get(0); // Get selected cell
+        nomenclatureIdColumn.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getNomenclatura().getIdNomenclature()) // Nomenclature ID
+        );
 
-                int colIndex = pos.getColumn(); // Get the column index of the clicked cell
-                if (colIndex == 2) { // Check if the clicked column is "nomenclatureIdColumn" (index 2)
-                    InvoiceStore selectedInvoice = invoiceTable.getSelectionModel().getSelectedItem();
-                    if (selectedInvoice != null) {
-                        Long nomenclatureId = selectedInvoice.getNomenclatura().getIdNomenclature();
-                        int nomenclatureIdInt = nomenclatureId.intValue();
-                        Nomenclature nomenclature = entityManager.findEntityById(Nomenclature.class, nomenclatureIdInt).y();
-                        if (nomenclature != null) {
-                            try {
-                                loadNomenclatureScene(nomenclature);  // Load the Nomenclature scene
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
+        dateColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getDate().toString()) // Date
+        );
+
+        employeeNameColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(fetchEmployeeName(cellData.getValue().getEmployee().getId())) // Employee Name
+        );
+
+        invoiceTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                Long nomenclatureId = newSelection.getNomenclatura().getIdNomenclature();
+                Nomenclature nomenclature = entityManagerWrapper.findEntityById(Nomenclature.class, nomenclatureId.intValue()).y();
+                if (nomenclature != null) {
+                    try {
+                        loadNomenclatureScene(nomenclature);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }
         });
+        loadInvoiceData();
+    }
 
-        // Load data into the table
-        List<InvoiceStore> invoices = entityManager.findAllEntities(InvoiceStore.class);
-        invoiceList.setAll(invoices);
-        invoiceTable.setItems(invoiceList);
+    private void loadInvoiceData() {
+        List<InvoiceStore> invoices = entityManagerWrapper.findAllEntities(InvoiceStore.class);
+        invoiceTable.setItems(FXCollections.observableArrayList(invoices));
+    }
+
+    private String fetchEmployeeName(Long employeeId) {
+        if (employeeId == null) {
+            return "Unknown";
+        }
+        Pair<Boolean, Employee> result = entityManagerWrapper.findEntityById(Employee.class, employeeId.intValue());
+        return result.x() ? result.y().getName() : "Unknown";
     }
 
 
@@ -89,7 +106,7 @@ public class InvoiceStore_scene {
     private void SaveInvoice() {
         InvoiceStore selectedInvoice = invoiceTable.getSelectionModel().getSelectedItem();
         if (selectedInvoice != null) {
-            entityManager.genEntity(selectedInvoice);
+            entityManagerWrapper.genEntity(selectedInvoice);
         }
     }
 
@@ -97,20 +114,19 @@ public class InvoiceStore_scene {
     private void DeleteInvoice() {
         InvoiceStore selectedInvoice = invoiceTable.getSelectionModel().getSelectedItem();
         if (selectedInvoice != null) {
-            entityManager.deleteEntityById(InvoiceStore.class, selectedInvoice.getIdInvoice().intValue());
+            entityManagerWrapper.deleteEntityById(InvoiceStore.class, selectedInvoice.getIdInvoice().intValue());
             invoiceList.remove(selectedInvoice);
         }
     }
 
     @FXML
     private void onNomenclatureIdDoubleClick(MouseEvent event) throws IOException {
-        // need to add an event on a double click
         InvoiceStore selectedInvoice = invoiceTable.getSelectionModel().getSelectedItem();
         if (selectedInvoice != null) {
             Long nomenclatureId = selectedInvoice.getNomenclatura().getIdNomenclature();
 
             int nomenclatureIdInt = nomenclatureId.intValue();
-            Nomenclature nomenclature = entityManager.findEntityById(Nomenclature.class, nomenclatureIdInt).y();
+            Nomenclature nomenclature = entityManagerWrapper.findEntityById(Nomenclature.class, nomenclatureIdInt).y();
             if (nomenclature != null) {
                 loadNomenclatureScene(nomenclature);
             }
@@ -119,7 +135,6 @@ public class InvoiceStore_scene {
 
 
     private void loadNomenclatureScene(Nomenclature nomenclature) throws IOException {
-        //Need to add access to id of nomenclature
         loader.loadScene("scenes/nomenclature_scene.fxml", 500, 500, "Nomenclature", true, new Stage());
         System.out.println("Loading Nomenclature scene for: " + nomenclature.getIdNomenclature());
     }

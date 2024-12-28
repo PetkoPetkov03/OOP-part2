@@ -2,6 +2,7 @@ package com.sparks.of.fabrication.oop2.scenes;
 
 import com.sparks.of.fabrication.oop2.Singleton;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
+import com.sparks.of.fabrication.oop2.utils.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;

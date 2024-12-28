@@ -11,10 +11,10 @@
     <TableView fx:id="invoiceTable" layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0"
                AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
-            <TableColumn fx:id="invoiceIdColumn" text="Invoice ID" prefWidth="100.0" />
-            <TableColumn fx:id="invoiceDateColumn" text="Invoice Date" prefWidth="150.0" />
-            <TableColumn fx:id="nomenclatureIdColumn" text="Nomenclature ID" prefWidth="150.0" />
-            <TableColumn fx:id="employeeIdColumn" text="Employee ID" prefWidth="100.0" />
+            <TableColumn fx:id="invoiceIdColumn" text="Invoice ID" prefWidth="100"/>
+            <TableColumn fx:id="nomenclatureIdColumn" text="Nomenclature ID" prefWidth="150"/>
+            <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
+            <TableColumn fx:id="employeeNameColumn" text="Employee Name" prefWidth="200"/>
         </columns>
     </TableView>
 

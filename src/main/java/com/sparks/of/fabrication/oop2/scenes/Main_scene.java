@@ -2,7 +2,6 @@ package com.sparks.of.fabrication.oop2.scenes;
 
 import com.sparks.of.fabrication.oop2.Singleton;
 import com.sparks.of.fabrication.oop2.models.Employee;
-import jakarta.persistence.EntityManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -14,9 +13,6 @@ import org.apache.logging.log4j.LogManager;
 
 import com.sparks.of.fabrication.oop2.utils.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class Main_scene {
 

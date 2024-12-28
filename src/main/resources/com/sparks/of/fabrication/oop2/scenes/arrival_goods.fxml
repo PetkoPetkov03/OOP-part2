@@ -27,19 +27,27 @@
 
     <!-- Center Table -->
     <center>
-            <TableView fx:id="arrivalTable">
+        <HBox alignment="CENTER">
+            <!-- First Table: arrivalTable -->
+            <TableView fx:id="arrivalTable" HBox.hgrow="ALWAYS">
                 <columns>
                     <TableColumn text="Код" fx:id="colCode"/>
                     <TableColumn text="Наименование на стока" fx:id="colName"/>
                     <TableColumn text="Мярка" fx:id="colMeasure"/>
-                    <TableColumn text="Количество" fx:id="colQuantity"/>
-                    <TableColumn text="Доставна цена" fx:id="colArrivalPrice"/>
-                    <TableColumn text="Надценка %" fx:id="colMarkup"/>
-                    <TableColumn text="Продажна цена" fx:id="colSellingPrice"/>
                 </columns>
             </TableView>
 
+            <!-- Second Table: AmS -->
+            <TableView fx:id="AmS" HBox.hgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colQuantity" text="Количество"/>
+                    <TableColumn fx:id="colArrivalPrice" text="Доставна цена"/>
+                    <TableColumn fx:id="colSellingPrice" text="Продажна цена"/>
+                </columns>
+            </TableView>
+        </HBox>
     </center>
+
 
     <!-- Left Side (Box 1 and Box 3 combined) -->
     <left>
