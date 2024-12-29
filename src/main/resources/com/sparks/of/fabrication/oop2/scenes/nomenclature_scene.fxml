@@ -3,16 +3,6 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.sparks.of.fabrication.oop2.scenes.Nomenclature_scene">
-
-    <top>
-        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-            <Button text="Add" fx:id="addButton" onAction="#Add" />
-            <Button text="Save to Database" fx:id="saveButton" onAction="#Save" />
-            <Button text="Delete All" fx:id="deleteAllButton" onAction="#DeleteAll" />
-            <TextField fx:id="searchField" promptText="Search items..." onKeyReleased="#Search" />
-        </HBox>
-    </top>
-
     <center>
         <TableView fx:id="nomenclatureTable" style="-fx-padding: 10;">
             <columns>

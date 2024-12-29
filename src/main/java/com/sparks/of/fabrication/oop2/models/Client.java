@@ -3,13 +3,11 @@ package com.sparks.of.fabrication.oop2.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "client_model")
 @Getter
 @Setter
-public class ClientModel {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

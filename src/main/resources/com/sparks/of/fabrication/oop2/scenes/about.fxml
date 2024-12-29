@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.sparks.of.fabrication.oop2.scenes.Manager_scene" prefHeight="400.0" prefWidth="600.0">
+    <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" spacing="10" style="-fx-padding: 20;">
+        <Label text="About Manager Interface" style="-fx-font-weight: bold;" />
+        <Label text="This application is designed to manage warehouse operations." wrapText="true">
+            <font>
+                <Font name="Arial" size="14" />
+            </font>
+        </Label>
+        <Label text="Version: 1.0.0" />
+        <Label text="© 2024 Sparks of Fabrication" />
+    </VBox>
+</AnchorPane>

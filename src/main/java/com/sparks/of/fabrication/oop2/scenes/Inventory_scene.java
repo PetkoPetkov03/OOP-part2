@@ -1,9 +1,7 @@
 package com.sparks.of.fabrication.oop2.scenes;
 
 import com.sparks.of.fabrication.oop2.Singleton;
-import com.sparks.of.fabrication.oop2.models.Category;
-import com.sparks.of.fabrication.oop2.models.InvoiceStore;
-import com.sparks.of.fabrication.oop2.models.Item;
+import com.sparks.of.fabrication.oop2.models.*;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.utils.Pair;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,17 +31,22 @@ public class Inventory_scene {
     private TableColumn<Item, Integer> quantityColumn;
 
     @FXML
-    private TextField nameField, priceField, arrivalPriceField, quantityField, searchField;
+    private TextField nameField, priceField, arrivalPriceField, quantityField, searchField, idField, catCliSupText;
 
     @FXML
     private ComboBox<String> categoryComboBox;
+    @FXML
+    private ComboBox<String> catCliSupComboBox;
 
     @FXML
     private Button saveButton;
+    @FXML
+    private Button catCliSupCreate,catCliSupDelete;
 
-    private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
+    private final EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
 
     private boolean isEditMode = false;
+    private int catCliSup;
     private Item currentItem;
 
     @FXML
@@ -59,13 +62,20 @@ public class Inventory_scene {
 
         loadCategories();
 
+        idItemColumn.prefWidthProperty().bind(inventoryTable.widthProperty().multiply(0.10));
+        nameColumn.prefWidthProperty().bind(inventoryTable.widthProperty().multiply(0.20));
+        categoryColumn.prefWidthProperty().bind(inventoryTable.widthProperty().multiply(0.15));
+        priceColumn.prefWidthProperty().bind(inventoryTable.widthProperty().multiply(0.15));
+        arrivalPriceColumn.prefWidthProperty().bind(inventoryTable.widthProperty().multiply(0.15));
+        quantityColumn.prefWidthProperty().bind(inventoryTable.widthProperty().multiply(0.15));
+
         inventoryTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 isEditMode = true;
                 currentItem = newValue;
                 populateFields(currentItem);
             } else {
-                isEditMode = false; // Deselecting the item
+                isEditMode = false;
                 clearFields();
             }
         });
@@ -104,6 +114,7 @@ public class Inventory_scene {
     }
 
     private void populateFields(Item item) {
+        idField.setText(item.getIdItem().toString());
         nameField.setText(item.getName());
         priceField.setText(String.valueOf(item.getPrice()));
         arrivalPriceField.setText(String.valueOf(item.getArrivalPrice()));
@@ -112,6 +123,7 @@ public class Inventory_scene {
     }
 
     private void clearFields() {
+        idField.clear();
         nameField.clear();
         priceField.clear();
         arrivalPriceField.clear();
@@ -164,5 +176,60 @@ public class Inventory_scene {
         } else {
             System.out.println("Error creating new item.");
         }
+    }
+    @FXML
+    private void BCat(){
+        catCliSupComboBox.getItems().clear();
+        catCliSup = 1;
+        List<Category> categories = entityManagerWrapper.findAllEntities(Category.class);
+
+        for (Category category : categories) {
+            catCliSupComboBox.getItems().add(category.getCategory());
+        }
+    }
+    @FXML
+    private void BSup(){
+        catCliSupComboBox.getItems().clear();
+        catCliSup = 2;
+        List<Suppliers> suppliers = entityManagerWrapper.findAllEntities(Suppliers.class);
+
+        for (Suppliers supplier : suppliers ) {
+            catCliSupComboBox.getItems().add(supplier.getName());
+        }
+    }
+    @FXML
+    private void BCli(){
+        catCliSupComboBox.getItems().clear();
+        catCliSup = 3;
+        List<Client> clients = entityManagerWrapper.findAllEntities(Client.class);
+
+        for (Client client : clients) {
+            catCliSupComboBox.getItems().add(client.getName());
+        }
+    }
+
+    @FXML
+    private void catCliSupCreate(){
+        switch(catCliSup){
+            case 1:
+                Category category = new Category();
+                category.setCategory(catCliSupText.getText());
+                entityManagerWrapper.genEntity(category);
+                break;
+            case 2:
+                Suppliers supplier = new Suppliers();
+                supplier.setName(catCliSupText.getText());
+                entityManagerWrapper.genEntity(supplier);
+                break;
+            case 3:
+                Client client = new Client();
+                client.setName(catCliSupText.getText());
+                entityManagerWrapper.genEntity(client);
+                break;
+        }
+    }
+    @FXML
+    private void catCliSupDelete(){
+
     }
 }
