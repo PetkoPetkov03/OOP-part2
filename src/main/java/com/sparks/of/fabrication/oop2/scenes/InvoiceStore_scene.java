@@ -48,9 +48,8 @@ public class InvoiceStore_scene {
 
     @FXML
     public void initialize() {
-        // Set up columns
         invoiceIdColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getIdInvoice()) // Invoice ID
+                new SimpleObjectProperty<>(cellData.getValue().getIdInvoice())
         );
 
         nomenclatureIdColumn.setCellValueFactory(cellData ->
@@ -78,6 +77,10 @@ public class InvoiceStore_scene {
                 }
             }
         });
+        invoiceIdColumn.prefWidthProperty().bind(invoiceTable.widthProperty().multiply(0.25));
+        nomenclatureIdColumn.prefWidthProperty().bind(invoiceTable.widthProperty().multiply(0.25));
+        dateColumn.prefWidthProperty().bind(invoiceTable.widthProperty().multiply(0.25));
+        employeeNameColumn.prefWidthProperty().bind(invoiceTable.widthProperty().multiply(0.25));
         loadInvoiceData();
     }
 

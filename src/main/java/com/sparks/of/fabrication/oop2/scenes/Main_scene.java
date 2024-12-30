@@ -42,16 +42,10 @@ public class Main_scene {
 
             if (employeeResult.x()) {
                 loggedInEmployee = employeeResult.y();
+                LogEmployee.initializeLogEmployee();
                 Singleton.getInstance(Employee.class, loggedInEmployee);
                 if (BCrypt.checkpw(password, loggedInEmployee.getPassword())) {
-                    String roleName = loggedInEmployee.getRole().getRole().toString();
-
-                    if ("admin".equalsIgnoreCase(roleName)) {
-                        loader.loadScene("scenes/administrator_scene.fxml", 500, 500, "Admin", true, new Stage());
-                    } else {
-                        loader.loadScene("scenes/manager_scene.fxml", 500, 500, "Manager", true, new Stage());
-                    }
-
+                    loader.loadScene("scenes/manager_scene.fxml", 500, 300, "Main", false, new Stage());
                     username.getScene().getWindow().hide();
                 } else {
                     showAlert("Invalid password");

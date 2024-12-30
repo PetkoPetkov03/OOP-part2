@@ -14,49 +14,46 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sparks.of.fabrication.oop2.scenes.Manager_scene">
-   <children>
-      <BorderPane prefHeight="500.0" prefWidth="500.0">
-         <top>
-            <VBox>
-               <MenuBar>
-                  <Menu text="File">
-                     <MenuItem text="Exit" onAction="#handleExit" />
-                  </Menu>
-                  <Menu text="View">
-                     <MenuItem text="Take in Arrival Goods" onAction="#showArrivalGoods" />
-                     <MenuItem text="Inventory" onAction="#showInventory" />
-                     <MenuItem text="Invoices" onAction="#showInvoices" />
-                     <MenuItem text="Cash Register" onAction="#showCashRegister" />
-                     <MenuItem text="Employees" onAction="#showEmployees" />
-                  </Menu>
-                  <Menu text="Help">
-                     <MenuItem text="About" onAction="#showAbout" />
-                  </Menu>
-               </MenuBar>
-               <HBox prefHeight="100.0" prefWidth="200.0">
-                  <Label text="Manager Interface" translateX="50.0" translateY="20.0">
-                     <font>
-                        <Font size="32.0"/>
-                     </font>
-                  </Label>
-               </HBox>
-            </VBox>
-         </top>
-         <right>
-            <VBox prefHeight="400.0" prefWidth="119.0" spacing="10.0">
-               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Checkout"/>
-               <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Employees"/>
-            </VBox>
-         </right>
-         <bottom>
-            <ImageView fx:id="notificationIcon" fitHeight="43.0" fitWidth="45.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
-               <Image requestedHeight="50" requestedWidth="50" url="@bell-icon.png" />
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
-         </bottom>
-      </BorderPane>
-   </children>
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.sparks.of.fabrication.oop2.scenes.Manager_scene">
+   <BorderPane prefHeight="300.0" prefWidth="500.0">
+      <top>
+         <VBox>
+            <MenuBar>
+               <Menu text="General">
+                  <MenuItem text="Take in Arrival Goods" onAction="#showArrivalGoods"/>
+                  <MenuItem text="Cash Register" onAction="#showCashRegister"/>
+                  <MenuItem text="Inventory" onAction="#showInventory"/>
+                  <MenuItem text="Exit" onAction="#handleExit"/>
+               </Menu>
+               <Menu text="references">
+                  <MenuItem text="Invoices" onAction="#showInvoices"/>
+                  <MenuItem text="Employees" onAction="#showEmployees"/>
+                  <MenuItem text="Logs" onAction="#showLogs" />
+               </Menu>
+               <Menu text="Admin Use">
+                  <MenuItem text="CreateEmployee" onAction="#handleCreateEmployee"/>
+                  <MenuItem text="CreateCheckout" onAction="#handleCheckout"/>
+                  <MenuItem text="About" onAction="#showAbout"/>
+               </Menu>
+            </MenuBar>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <Label text="Employee Interface" translateX="50.0" translateY="50.0">
+                  <font>
+                     <Font size="32.0"/>
+                  </font>
+               </Label>
+            </HBox>
+         </VBox>
+      </top>
+      <bottom>
+         <ImageView fx:id="notificationIcon" fitHeight="65.0" fitWidth="45.0" focusTraversable="true"
+                    pickOnBounds="true" preserveRatio="true">
+            <Image requestedHeight="50" requestedWidth="50" url="@bell-icon.png"/>
+            <cursor>
+               <Cursor fx:constant="HAND"/>
+            </cursor>
+         </ImageView>
+      </bottom>
+   </BorderPane>
 </AnchorPane>

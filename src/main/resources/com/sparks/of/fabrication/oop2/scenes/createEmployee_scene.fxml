@@ -11,18 +11,19 @@
     <Label text="Create New Employee" style="-fx-font-size: 16px;" />
 
     <Label text="Employee Email" />
-    <TextField fx:id="emailEmployeeField" promptText="Enter Employee Email" />
+    <TextField fx:id="emailEmployeeField" promptText="Enter Employee Email" prefWidth="300" />
 
     <Label text="Employee Password" />
-    <PasswordField fx:id="passwordEmployeeField" promptText="Enter Employee Password" />
+    <PasswordField fx:id="passwordEmployeeField" promptText="Enter Employee Password" prefWidth="300" />
 
     <Label text="Employee Name" />
-    <TextField fx:id="nameField" promptText="Enter Employee Name" />
+    <TextField fx:id="nameField" promptText="Enter Employee Name" prefWidth="300" />
 
     <Label text="Role" />
-    <ComboBox fx:id="roleComboBox" promptText="Select Role" />
+    <ComboBox fx:id="roleComboBox" promptText="Select Role" prefWidth="300" />
 
     <Label fx:id="messages" />
 
     <Button text="Save Employee" onAction="#createEmployee" />
 </VBox>
+

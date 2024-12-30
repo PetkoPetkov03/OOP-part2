@@ -4,7 +4,7 @@ import com.sparks.of.fabrication.oop2.Singleton;
 import com.sparks.of.fabrication.oop2.models.Checkout;
 import com.sparks.of.fabrication.oop2.models.Employee;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
-import javafx.collections.ObservableList;
+import com.sparks.of.fabrication.oop2.utils.LogEmployee;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -19,6 +19,8 @@ public class CreateCashRegister {
     private ComboBox<String> employeeComboBox;
 
     private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
+
+    private LogEmployee logEmployee = Singleton.getInstance(LogEmployee.class);
 
     @FXML
     private void initialize(){
@@ -36,5 +38,6 @@ public class CreateCashRegister {
     checkout.setEmployee(Employee);
     checkout.setCash(Double.parseDouble(cashInput.getText()));
     entityManagerWrapper.genEntity(checkout);
+    logEmployee.createLog("Created Checkout", checkout.getEmployee().getName());
     }
 }
