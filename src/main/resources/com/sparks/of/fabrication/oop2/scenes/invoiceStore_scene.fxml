@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.sparks.of.fabrication.oop2.scenes.InvoiceStore_scene">
-    <TableView fx:id="invoiceTable" layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="600.0"
-               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-        <columns>
-            <TableColumn fx:id="invoiceIdColumn" text="Invoice ID" prefWidth="100"/>
-            <TableColumn fx:id="nomenclatureIdColumn" text="Nomenclature ID" prefWidth="150"/>
-            <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
-            <TableColumn fx:id="employeeNameColumn" text="Employee Name" prefWidth="200"/>
-        </columns>
-    </TableView>
+<AnchorPane xmlns:fx="http://javafx.com/javafx" fx:controller="com.sparks.of.fabrication.oop2.scenes.invoices.InvoiceStore_scene">
+    <VBox spacing="10" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
 
-    <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;" AnchorPane.bottomAnchor="50.0">
-        <Button text="Add Invoice" fx:id="addButton" onAction="#AddInvoice" />
-        <Button text="Save Invoice" fx:id="saveButton" onAction="#SaveInvoice" />
-        <Button text="Delete Invoice" fx:id="deleteButton" onAction="#DeleteInvoice" />
-    </HBox>
+        <HBox spacing="10">
+            <ComboBox fx:id="searchByComboBox" promptText="Search by" onAction="#onSearchByChanged" HBox.hgrow="ALWAYS" />
+            <ComboBox fx:id="searchCriteriaComboBox" visible="false" promptText="Select Criteria" HBox.hgrow="ALWAYS" />
+            <DatePicker fx:id="datePicker" visible="false" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <TableView fx:id="invoiceTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="invoiceIdColumn" text="Invoice ID" prefWidth="100"/>
+                <TableColumn fx:id="nomenclatureIdColumn" text="Nomenclature ID" prefWidth="150"/>
+                <TableColumn fx:id="dateColumn" text="Date" prefWidth="150"/>
+                <TableColumn fx:id="employeeNameColumn" text="Employee Name" prefWidth="200"/>
+            </columns>
+        </TableView>
+    </VBox>
 </AnchorPane>
-

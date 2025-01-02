@@ -7,20 +7,20 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.PasswordField?>
-<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sparks.of.fabrication.oop2.scenes.CreateEmployee_scene">
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sparks.of.fabrication.oop2.scenes.createEmployee.CreateEmployee_scene">
     <Label text="Create New Employee" style="-fx-font-size: 16px;" />
 
     <Label text="Employee Email" />
-    <TextField fx:id="emailEmployeeField" promptText="Enter Employee Email" prefWidth="300" />
+    <TextField fx:id="emailEmployeeField" promptText="Enter Employee Email" maxWidth="300" />
 
     <Label text="Employee Password" />
-    <PasswordField fx:id="passwordEmployeeField" promptText="Enter Employee Password" prefWidth="300" />
+    <PasswordField fx:id="passwordEmployeeField" promptText="Enter Employee Password" maxWidth="300" />
 
     <Label text="Employee Name" />
-    <TextField fx:id="nameField" promptText="Enter Employee Name" prefWidth="300" />
+    <TextField fx:id="nameField" promptText="Enter Employee Name" maxWidth="300" />
 
     <Label text="Role" />
-    <ComboBox fx:id="roleComboBox" promptText="Select Role" prefWidth="300" />
+    <ComboBox fx:id="roleComboBox" promptText="Select Role" maxWidth="300" />
 
     <Label fx:id="messages" />
 

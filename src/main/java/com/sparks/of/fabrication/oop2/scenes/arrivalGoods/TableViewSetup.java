@@ -1,9 +1,13 @@
 package com.sparks.of.fabrication.oop2.scenes.arrivalGoods;
 
 import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.models.Category;
 import com.sparks.of.fabrication.oop2.models.Item;
+import com.sparks.of.fabrication.oop2.models.Suppliers;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -13,6 +17,7 @@ import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LongStringConverter;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 public class TableViewSetup {
 
@@ -24,7 +29,8 @@ public class TableViewSetup {
             TableView<AmSData> AmsView,
             TableColumn<AmSData, Integer> colQuantity,
             TableColumn<AmSData, Double> colArrivalPrice,
-            TableColumn<AmSData, Double> colSellingPrice
+            TableColumn<AmSData, Double> colSellingPrice,
+            ComboBox<String> SupplierBox
     ) {
         final EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
 
@@ -45,6 +51,13 @@ public class TableViewSetup {
         colArrivalPrice.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         colSellingPrice.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
 
+        colCode.prefWidthProperty().bind(tableView.widthProperty().multiply(0.20));
+        colName.prefWidthProperty().bind(tableView.widthProperty().multiply(0.60));
+        colMeasure.prefWidthProperty().bind(tableView.widthProperty().multiply(0.20));
+
+        colQuantity.prefWidthProperty().bind(tableView.widthProperty().multiply(0.20));
+        colArrivalPrice.prefWidthProperty().bind(tableView.widthProperty().multiply(0.40));
+        colSellingPrice.prefWidthProperty().bind(tableView.widthProperty().multiply(0.40));
 
 
         AmsView.setEditable(true);
@@ -75,11 +88,33 @@ public class TableViewSetup {
                 Item item = entityManagerWrapper.findEntityByVal(Item.class, name, event.getNewValue()).y();
                 int rowIndex = event.getTablePosition().getRow();
                 event.getTableView().getItems().set(rowIndex, item);
+                AmsView.getItems().get(rowIndex).setArrivalPrice(item.getArrivalPrice());
+                AmsView.getItems().get(rowIndex).setSellingPrice(item.getPrice());
+                AmsView.refresh();
                 event.getTableView().refresh();
             } catch (NoSuchFieldException e) {
                 throw new RuntimeException(e);
             }
         });
+        colName.setOnEditCommit(event -> {
+            try {
+                Field name = Item.class.getDeclaredField("name");
+                Item item = entityManagerWrapper.findEntityByVal(Item.class, name, event.getNewValue()).y();
+                int rowIndex = event.getTablePosition().getRow();
+                event.getTableView().getItems().set(rowIndex, item);
+                AmsView.getItems().get(rowIndex).setArrivalPrice(item.getArrivalPrice());
+                AmsView.getItems().get(rowIndex).setSellingPrice(item.getPrice());
+                AmsView.refresh();
+                event.getTableView().refresh();
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        List<Suppliers> suppliers = entityManagerWrapper.findAllEntities(Suppliers.class);
+        List<String> supplierNames = suppliers.stream()
+                .map(Suppliers::getName)
+                .toList();
+        SupplierBox.setItems(FXCollections.observableArrayList(supplierNames));
     }
 }
 

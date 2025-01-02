@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.sparks.of.fabrication.oop2.scenes.checkout.CheckoutController">
     <top>
         <VBox spacing="10" BorderPane.alignment="CENTER">
@@ -18,8 +20,16 @@
     </top>
 
     <center>
-        <ListView fx:id="scannedItemsList" />
+        <TableView fx:id="scannedItemsTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" />
+                <TableColumn fx:id="nameColumn" text="Name" />
+                <TableColumn fx:id="priceColumn" text="Price" />
+                <TableColumn fx:id="quantityColumn" text="Quantity" />
+            </columns>
+        </TableView>
     </center>
+
 
     <bottom>
         <HBox alignment="CENTER_RIGHT" spacing="10" BorderPane.alignment="BOTTOM_RIGHT">

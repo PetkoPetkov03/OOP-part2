@@ -1,8 +1,11 @@
-package com.sparks.of.fabrication.oop2.scenes;
+package com.sparks.of.fabrication.oop2.scenes.notification;
 
 import com.sparks.of.fabrication.oop2.models.Notification;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.LogEmployee;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -34,34 +37,36 @@ public class NotificationController {
 
     private final EntityManagerWrapper entityManager = Singleton.getInstance(EntityManagerWrapper.class);
 
+    private static final Logger log = LogManager.getLogger(NotificationController.class);
+    private final LogEmployee logEmployee = Singleton.getInstance(LogEmployee.class);
+
     @FXML
     public void initialize() {
-        idNotificationColumn.setCellValueFactory(new PropertyValueFactory<>("idNotification"));
-        idEmployeeColumn.setCellValueFactory(new PropertyValueFactory<>("idEmployee"));
-        messageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        dateSentColumn.setCellValueFactory(new PropertyValueFactory<>("dateSent"));
+        log.info("Initializing Notification Controller.");
 
-        idNotificationColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.1));
-        idEmployeeColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.1));
-        messageColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.4));
-        statusColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.2));
-        dateSentColumn.prefWidthProperty().bind(notificationTable.widthProperty().multiply(0.2));
-
+        TableViewNotification.configureTableColumns(notificationTable, idNotificationColumn, idEmployeeColumn, messageColumn, statusColumn, dateSentColumn);
         loadNotifications();
+
+        logEmployee.createLog("Scene Initialization", "Notification controller initialized.");
     }
 
     private void loadNotifications() {
-        ObservableList<Notification> notifications;
+        log.info("Loading notifications.");
 
+        ObservableList<Notification> notifications;
         List<Notification> notificationList = entityManager.findAllEntities(Notification.class);
 
         if (notificationList == null || notificationList.isEmpty()) {
+            log.warn("No notifications found.");
             notifications = FXCollections.observableArrayList();
+            logEmployee.createLog("Load Notifications", "No notifications found.");
         } else {
+            log.info("Found {} notifications.", notificationList.size());
             notifications = FXCollections.observableArrayList(notificationList);
+            logEmployee.createLog("Load Notifications", "Loaded " + notificationList.size() + " notifications.");
         }
 
         notificationTable.setItems(notifications);
+        notificationTable.refresh();
     }
 }

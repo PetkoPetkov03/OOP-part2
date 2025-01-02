@@ -59,8 +59,6 @@ public class Main_scene {
             showAlert("An error occurred during login");
         }
     }
-
-
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Input Error");

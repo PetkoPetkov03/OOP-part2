@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.sparks.of.fabrication.oop2.scenes.transaction.TransactionController">
+    <VBox spacing="10" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="10.0"
+          AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" alignment="CENTER">
+
+        <DatePicker fx:id="datePicker" promptText="Select a Date" VBox.vgrow="NEVER" />
+
+        <HBox VBox.vgrow="ALWAYS">
+            <TableView fx:id="transactionTable" HBox.hgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="Transaction ID" />
+                    <TableColumn fx:id="clientColumn" text="Client" />
+                    <TableColumn fx:id="employeeColumn" text="Employee" />
+                    <TableColumn fx:id="checkoutColumn" text="Checkout" />
+                    <TableColumn fx:id="totalAmountColumn" text="Total Amount" />
+                </columns>
+            </TableView>
+
+            <TableView fx:id="transactionDetailsTable" HBox.hgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="itemColumn" text="Item" />
+                    <TableColumn fx:id="quantityColumn" text="Quantity" />
+                    <TableColumn fx:id="priceColumn" text="Price" />
+                </columns>
+            </TableView>
+
+        </HBox>
+    </VBox>
+</AnchorPane>

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.sparks.of.fabrication.oop2.scenes.Inventory_scene">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.sparks.of.fabrication.oop2.scenes.inventory.InventoryController">
     <VBox spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
 
         <HBox spacing="5.0">
@@ -53,6 +53,7 @@
                 <TextField fx:id="quantityField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
                 <Button fx:id="saveButton" onAction="#saveOrUpdateItem" text="Save" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <Button fx:id="deleteButton" onAction="#deleteItem" text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                 <columnConstraints>
                     <ColumnConstraints />
                     <ColumnConstraints />
@@ -68,7 +69,7 @@
                 </rowConstraints>
             </GridPane>
 
-            <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-padding: 2;">
+            <VBox spacing="10" prefHeight="200.0" prefWidth="100.0" style="-fx-padding: 2;">
                     <Button prefHeight="25.0" prefWidth="100.0" text="Category" onAction="#BCat"  />
                     <Button prefHeight="25.0" prefWidth="100.0" text="Supplier" onAction="#BSup" />
                     <Button prefHeight="25.0" prefWidth="100.0" text="Client" onAction="#BCli"/>
@@ -76,8 +77,10 @@
 
             <VBox spacing="10.0">
                 <HBox spacing="10.0">
+                    <VBox spacing="10">
                     <ComboBox fx:id="catCliSupComboBox" prefWidth="200.0" />
                     <TextField fx:id="catCliSupText" promptText="Enter value" />
+                    </VBox>
                     <Button fx:id="catCliSupCreate" text="Create" onAction="#catCliSupCreate" />
                     <Button fx:id="catCliSupDelete" text="Delete" onAction="#catCliSupDelete"/>
                 </HBox>

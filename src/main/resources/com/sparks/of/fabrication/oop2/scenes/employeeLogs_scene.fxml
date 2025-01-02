@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sparks.of.fabrication.oop2.scenes.EmployeeLogs">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sparks.of.fabrication.oop2.scenes.employeeLogs.EmployeeLogs">
     <VBox AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="10.0" alignment="CENTER" spacing="10.0">
         <ComboBox fx:id="employeeComboBox" prefWidth="200.0" VBox.vgrow="NEVER"/>
         <TableView fx:id="employeeLogsTable" VBox.vgrow="ALWAYS" prefHeight="380.0" prefWidth="580.0">

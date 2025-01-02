@@ -7,6 +7,7 @@ import java.util.Set;
 @Getter
 public enum Role {
     CASHIER(Set.of(Privileges.CASHIER)),
+    BACKSTAFF(Set.of(Privileges.MANAGE_INVENTORY)),
     MANAGER(Set.of(Privileges.MANAGE_INVENTORY, Privileges.VIEW_REPORTS)),
     ADMIN(Set.of(Privileges.ADMIN_PRIVILEGES, Privileges.VIEW_REPORTS));
 
