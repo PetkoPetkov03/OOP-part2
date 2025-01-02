@@ -24,17 +24,19 @@
                   <MenuItem text="Take in Arrival Goods" onAction="#showArrivalGoods"/>
                   <MenuItem text="Cash Register" onAction="#showCashRegister"/>
                   <MenuItem text="Inventory" onAction="#showInventory"/>
+                  <MenuItem text="About" onAction="#showAbout"/>
                   <MenuItem text="Exit" onAction="#handleExit"/>
                </Menu>
-               <Menu text="references">
+               <Menu text="References">
                   <MenuItem text="Invoices" onAction="#showInvoices"/>
-                  <MenuItem text="Employees" onAction="#showEmployees"/>
+                  <MenuItem text="Transactions" onAction="#showTransactions"/>
                   <MenuItem text="Logs" onAction="#showLogs" />
+                  <MenuItem text="Statistic" onAction="#showStatistic"/>
+                  <MenuItem text="Notifications" onAction="#handleNotification"/>
                </Menu>
                <Menu text="Admin Use">
                   <MenuItem text="CreateEmployee" onAction="#handleCreateEmployee"/>
                   <MenuItem text="CreateCheckout" onAction="#handleCheckout"/>
-                  <MenuItem text="About" onAction="#showAbout"/>
                </Menu>
             </MenuBar>
             <HBox prefHeight="100.0" prefWidth="200.0">
@@ -46,14 +48,5 @@
             </HBox>
          </VBox>
       </top>
-      <bottom>
-         <ImageView fx:id="notificationIcon" fitHeight="65.0" fitWidth="45.0" focusTraversable="true"
-                    pickOnBounds="true" preserveRatio="true">
-            <Image requestedHeight="50" requestedWidth="50" url="@bell-icon.png"/>
-            <cursor>
-               <Cursor fx:constant="HAND"/>
-            </cursor>
-         </ImageView>
-      </bottom>
    </BorderPane>
 </AnchorPane>

@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class SceneLoader {
 
-    public void loadScene(String filename, int width, int height,String title,boolean isResizable, Stage stage) throws IOException {
+    public void loadScene(String filename, double width, double height,String title,boolean isResizable, Stage stage) throws IOException {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource(filename));
             Scene scene = new Scene(fxmlLoader.load(), width, height);

@@ -3,6 +3,10 @@ package com.sparks.of.fabrication.oop2.scenes.arrivalGoods;
 import com.sparks.of.fabrication.oop2.Singleton;
 import com.sparks.of.fabrication.oop2.models.*;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
+import com.sparks.of.fabrication.oop2.utils.Pair;
+import com.sparks.of.fabrication.oop2.utils.LogEmployee;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +21,10 @@ import java.util.List;
 
 public class ArrivalGoodsScene {
 
+    private static final Logger log = LogManager.getLogger(ArrivalGoodsScene.class);
+
+    private final LogEmployee logEmployee = Singleton.getInstance(LogEmployee.class);
+
     @FXML private TableView<Item> arrivalTable;
     @FXML private TableColumn<Item, Long> colCode;
     @FXML private TableColumn<Item, String> colName;
@@ -25,13 +33,9 @@ public class ArrivalGoodsScene {
     @FXML private TableColumn<AmSData, Integer> colQuantity;
     @FXML private TableColumn<AmSData, Double> colArrivalPrice;
     @FXML private TableColumn<AmSData, Double> colSellingPrice;
-    @FXML private TextField txtServiceNumber;
     @FXML private DatePicker dateDocument;
     @FXML private TextField txtDocumentNumber;
-    @FXML private ComboBox<String> cmbDocumentType;
-    @FXML private ComboBox<String> cmbPaymentType;
-    @FXML private TextField txtSupplier;
-    @FXML private Label lblEmployee;
+    @FXML private ComboBox<String> SupplierBox;
     @FXML private DatePicker lblSystemDate;
     @FXML private ComboBox<ArrivalState> cmbStatus;
     @FXML private Button btnFirst;
@@ -46,64 +50,54 @@ public class ArrivalGoodsScene {
     private int currentIndex = -1;
     private List<Nomenclature> nomenclatureList;
     private ObservableList<Item> itemList;
-    ObservableList<AmSData> amsData = FXCollections.observableArrayList();
+    private ObservableList<AmSData> amsData = FXCollections.observableArrayList();
     private ArrivalGoodsService arrivalGoodsService;
-    private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
-    private Employee loggedInEmployee = Singleton.getInstance(Employee.class);
+    private final EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
+    private final Employee loggedInEmployee = Singleton.getInstance(Employee.class);
+    private InvoiceStore currentInvoiceStore;
 
     @FXML
     private void initialize() {
+        log.info("Initializing ArrivalGoodsScene...");
         arrivalGoodsService = new ArrivalGoodsService();
         nomenclatureList = new ArrayList<>();
-        amsData = FXCollections.observableArrayList();
+        itemList = FXCollections.observableArrayList();
 
-        TableViewSetup.configureTableColumns(arrivalTable, colCode, colName, colMeasure, AmS, colQuantity, colArrivalPrice, colSellingPrice);
+        TableViewSetup.configureTableColumns(arrivalTable, colCode, colName, colMeasure, AmS, colQuantity, colArrivalPrice, colSellingPrice, SupplierBox);
 
         lblSystemDate.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                System.out.println("Date selected: " + newValue);
+                log.info("System date changed to: {}", newValue);
                 loadItemsFromDatabase(newValue);
             }
         });
 
-        arrivalTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        AmS.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        colCode.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.2));
-        colName.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.5));
-        colMeasure.prefWidthProperty().bind(arrivalTable.widthProperty().multiply(0.3));
-
-        colQuantity.prefWidthProperty().bind(AmS.widthProperty().multiply(0.33));
-        colArrivalPrice.prefWidthProperty().bind(AmS.widthProperty().multiply(0.33));
-        colSellingPrice.prefWidthProperty().bind(AmS.widthProperty().multiply(0.34));
-
         lblSystemDate.setValue(LocalDate.now());
-        cmbDocumentType.setItems(FXCollections.observableArrayList("Стокова разписка", "Фактура"));
-        cmbPaymentType.setItems(FXCollections.observableArrayList("В брой", "Карта"));
         cmbStatus.setItems(FXCollections.observableArrayList(ArrivalState.values()));
         cmbStatus.setValue(ArrivalState.Open);
     }
 
     private void loadItemsFromDatabase(LocalDate selectedDate) {
+        log.info("Loading items from the database for date: {}", selectedDate);
         nomenclatureList = arrivalGoodsService.loadItems(selectedDate);
     }
 
     private void loadItemsForNomenclature(int currentIndex) {
         try {
-            List<Item> items = arrivalGoodsService.loadItemsForNomenclature(nomenclatureList.get(currentIndex));
+            itemList.clear();
+            amsData.clear();
 
-            itemList = FXCollections.observableArrayList(items);
+            Pair<List<Item>, List<AmSData>> itemsAndData = arrivalGoodsService.loadItemsForNomenclature(nomenclatureList.get(currentIndex));
+            itemList = FXCollections.observableArrayList(itemsAndData.x());
+            amsData = FXCollections.observableArrayList(itemsAndData.y());
+
             arrivalTable.setItems(itemList);
-
-            for (Item item : arrivalTable.getItems()) {
-                amsData.add(new AmSData(0, item.getArrivalPrice(), item.getPrice())); // Set quantity to 0
-            }
-
             AmS.setItems(amsData);
             arrivalTable.refresh();
             AmS.refresh();
+            log.info("Loaded items for nomenclature index: {}", currentIndex);
         } catch (Exception e) {
-            System.err.println("Error loading items for nomenclature: " + e.getMessage());
+            log.error("Error loading items for nomenclature: {}", e.getMessage(), e);
         }
     }
 
@@ -111,6 +105,7 @@ public class ArrivalGoodsScene {
     private void handleFirstButtonAction(ActionEvent event) {
         if (!nomenclatureList.isEmpty()) {
             currentIndex = 0;
+            log.info("Navigated to the first nomenclature.");
             loadItemsForNomenclature(currentIndex);
         }
     }
@@ -119,6 +114,7 @@ public class ArrivalGoodsScene {
     private void handlePreviousButtonAction(ActionEvent event) {
         if (currentIndex > 0) {
             currentIndex--;
+            log.info("Navigated to the previous nomenclature. Current index: {}", currentIndex);
             loadItemsForNomenclature(currentIndex);
         }
     }
@@ -127,6 +123,7 @@ public class ArrivalGoodsScene {
     private void handleNextButtonAction(ActionEvent event) {
         if (currentIndex < nomenclatureList.size() - 1) {
             currentIndex++;
+            log.info("Navigated to the next nomenclature. Current index: {}", currentIndex);
             loadItemsForNomenclature(currentIndex);
         }
     }
@@ -135,86 +132,59 @@ public class ArrivalGoodsScene {
     private void handleLastButtonAction(ActionEvent event) {
         if (!nomenclatureList.isEmpty()) {
             currentIndex = nomenclatureList.size() - 1;
+            log.info("Navigated to the last nomenclature.");
             loadItemsForNomenclature(currentIndex);
         }
     }
 
     @FXML
     private void handleNewButtonAction(ActionEvent event) {
+        currentInvoiceStore = new InvoiceStore();
+        currentInvoiceStore.setStatus(false);
+        currentInvoiceStore.setEmployee(loggedInEmployee);
+
         Nomenclature nomenclature = new Nomenclature();
+        nomenclature.setEmployee(loggedInEmployee);
         nomenclatureList.add(nomenclature);
+
         currentIndex = nomenclatureList.size() - 1;
+        log.info("Created new nomenclature. Current index: {}", currentIndex);
+        logEmployee.createLog("New nomenclature created by employee: " + loggedInEmployee.getId(),"");
+
         loadItemsForNomenclature(currentIndex);
+        arrivalGoodsService.toggleTableEditability(currentInvoiceStore, arrivalTable, AmS);
     }
 
     @FXML
-    private void handleCancelButtonAction(ActionEvent event) {
-        System.out.println("Cancel button clicked.");
-    }
+    private void handleSaveButtonAction(ActionEvent event) throws NoSuchFieldException {
+        if (currentInvoiceStore != null) {
+            Field field = Suppliers.class.getDeclaredField("name");
+            Suppliers supplier = entityManagerWrapper.findEntityByVal(Suppliers.class, field, SupplierBox.getValue()).y();
+            log.info("Saving invoice store with supplier: {}", supplier.getName());
 
-    @FXML
-    private void handleSaveButtonAction(ActionEvent event) {
-        Integer invoiceNumber = currentIndex;
-        Nomenclature currentNomenclature = nomenclatureList.get(currentIndex);
+            arrivalGoodsService.updateCurrentNomenclature(supplier, nomenclatureList, currentIndex, currentInvoiceStore);
+            arrivalGoodsService.saveCurrentInvoiceStore(currentInvoiceStore, Integer.parseInt(txtDocumentNumber.getText()), Date.valueOf(lblSystemDate.getValue()));
+            arrivalGoodsService.processArrivalTableItems(currentInvoiceStore, arrivalTable, AmS);
+            arrivalGoodsService.finalizeInvoiceStore(currentInvoiceStore);
 
-        currentNomenclature.setEmployee(loggedInEmployee);
-        currentNomenclature.setSuppliers(entityManagerWrapper.findEntityById(Suppliers.class, 1).y());
-
-        entityManagerWrapper.genEntity(currentNomenclature);
-
-        ArrivalState status = cmbStatus.getValue();
-
-        if (status.equals(ArrivalState.Closed)) {
-            InvoiceStore invoiceStore = new InvoiceStore();
-            invoiceStore.setNomenclatura(currentNomenclature);
-            invoiceStore.setEmployee(loggedInEmployee);
-            invoiceStore.setNumber(invoiceNumber);
-            invoiceStore.setDate(Date.valueOf(LocalDate.now()));
-            invoiceStore.setStatus(true);
-
-            entityManagerWrapper.genEntity(invoiceStore);
-
-            for (Item item : arrivalTable.getItems()) {
-                Item dbItem = entityManagerWrapper.findEntityById(Item.class, item.getIdItem().intValue()).y();
-
-                int rowIndex = arrivalTable.getItems().indexOf(item);
-
-                if (rowIndex >= 0 && rowIndex < AmS.getItems().size()) {
-                    Double newArrivalPrice = colArrivalPrice.getCellData(rowIndex);
-                    Double newSellingPrice = colSellingPrice.getCellData(rowIndex);
-                    Integer newTableQuantity = colQuantity.getCellData(rowIndex);
-
-                    boolean priceChanged = !dbItem.getArrivalPrice().equals(newArrivalPrice) || !dbItem.getPrice().equals(newSellingPrice);
-
-                    if (priceChanged) {
-                        dbItem.setArrivalPrice(newArrivalPrice);
-                        dbItem.setPrice(newSellingPrice);
-                    }
-                    dbItem.setQuantity(dbItem.getQuantity() + (newTableQuantity != null ? newTableQuantity : 0));
-                    entityManagerWrapper.genEntity(dbItem);
-
-                    NomenclatureDetails nomenclatureDetails = new NomenclatureDetails();
-                    nomenclatureDetails.setNomenclature(currentNomenclature);
-                    nomenclatureDetails.setItem(dbItem);
-                    nomenclatureDetails.setItemQuantity(newTableQuantity != null ? newTableQuantity : 0);
-                    nomenclatureDetails.setItemPrice(newArrivalPrice);
-
-                    entityManagerWrapper.genEntity(nomenclatureDetails);
-                }
-            }
+            logEmployee.createLog("Invoice saved by employee: " + loggedInEmployee.getId(),"");
+            log.info("Invoice successfully saved.");
         }
     }
-
 
     @FXML
     private void handleAddRow(ActionEvent event) {
         Item item = new Item();
         arrivalTable.getItems().add(item);
-        AmSData newEntry = new AmSData(0,0.0,0.0);
+
+        AmSData newEntry = new AmSData(0, 0.0, 0.0);
         amsData.add(newEntry);
+
         AmS.setItems(amsData);
         AmS.refresh();
         arrivalTable.refresh();
-    }
+        txtDocumentNumber.clear();
 
+        log.info("Added a new row to the table.");
+    }
 }

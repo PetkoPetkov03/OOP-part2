@@ -7,8 +7,11 @@ import jakarta.persistence.TypedQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.cglib.core.Local;
 
 import java.lang.reflect.Field;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -109,6 +112,22 @@ public class EntityManagerWrapper {
             return new Pair<>(false, null);
         }
     }
+    public <T> Pair<Boolean, List<T>> findEntitiesBetweenDates(Class<T> tClass, Field dateField, LocalDate startDate, LocalDate endDate) {
+        try {
+            String jpql = "SELECT e FROM " + tClass.getSimpleName() + " e WHERE e." + dateField.getName() + " BETWEEN :startDate AND :endDate";
+            TypedQuery<T> query = this.em.createQuery(jpql, tClass);
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+
+            List<T> entities = query.getResultList();
+
+            return new Pair<>(true, entities);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return new Pair<>(false, null);
+        }
+    }
+
 
 
     public <T> List<T> findAllEntities(Class<T> tClass) {

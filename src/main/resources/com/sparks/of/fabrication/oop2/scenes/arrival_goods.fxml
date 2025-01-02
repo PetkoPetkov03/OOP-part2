@@ -10,21 +10,6 @@
 <BorderPane xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.sparks.of.fabrication.oop2.scenes.arrivalGoods.ArrivalGoodsScene">
-
-    <!-- Top Menu Strip -->
-    <top>
-        <MenuBar>
-            <Menu text="Меню">
-                <MenuItem text="Начало"/>
-                <MenuItem text="Изход"/>
-            </Menu>
-            <Menu text="Действия">
-                <MenuItem text="Приемане на стока"/>
-                <MenuItem text="Каса"/>
-            </Menu>
-        </MenuBar>
-    </top>
-
     <!-- Center Table -->
     <center>
         <HBox alignment="CENTER">
@@ -48,44 +33,14 @@
         </HBox>
     </center>
 
-
-    <!-- Left Side (Box 1 and Box 3 combined) -->
-    <left>
-
-            <!-- Box 1 -->
-            <Label text="Служебен номер:" />
-            <TextField fx:id="txtServiceNumber" />
-            <Label text="Дата на документа:" />
-            <DatePicker fx:id="dateDocument" />
-            <Label text="Номер на документа:" />
-            <TextField fx:id="txtDocumentNumber" />
-            <Label text="Вид документ:" />
-            <ComboBox fx:id="cmbDocumentType">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Стокова разписка" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
-            <Label text="Вид плащане:" />
-            <ComboBox fx:id="cmbPaymentType">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="в брой" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
-
-            <!-- Box 3 -->
-            <Separator />
-            <Label text="Фирма:" />
-            <TextField fx:id="txtSupplier" promptText="Филтър по име на фирма" />
-
-    </left>
-
-    <!-- Right Side (Box 2) -->
     <right>
         <VBox spacing="10"  alignment="CENTER">
+            <Label text="Номер на документа:" />
+            <TextField fx:id="txtDocumentNumber" />
+
+            <Separator />
+            <Label text="Supplier:" />
+            <ComboBox fx:id="SupplierBox"/>
             <Label text="Системна дата:" />
             <DatePicker fx:id="lblSystemDate" />
             <HBox spacing="5" alignment="CENTER">
@@ -97,7 +52,6 @@
 
             <HBox spacing="5" alignment="CENTER">
                 <Button text="Нов" fx:id="btnNew" onAction="#handleNewButtonAction" />
-                <Button text="Отказ" fx:id="btnCancel" onAction="#handleCancelButtonAction"/>
             </HBox>
             <Button fx:id="btnAddRow" text="Добави ред" onAction="#handleAddRow" />
             <Label text="Състояние:" />
@@ -107,14 +61,10 @@
                     </FXCollections>
                 </items>
             </ComboBox>
+            <Button text="Запис" fx:id="btnSave" onAction="#handleSaveButtonAction"/>
         </VBox>
     </right>
 
-    <!-- Bottom -->
-    <bottom>
-        <HBox alignment="CENTER" >
-            <Button text="Запис" fx:id="btnSave" onAction="#handleSaveButtonAction"/>
-        </HBox>
-    </bottom>
+
 
 </BorderPane>

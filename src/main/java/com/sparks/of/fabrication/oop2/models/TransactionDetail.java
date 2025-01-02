@@ -16,14 +16,18 @@ public class TransactionDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "transaction_id", nullable = false)
     private Transaction transaction;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
+
+    @Column(name = "price", nullable = false)
+    private Double price;
 }
+

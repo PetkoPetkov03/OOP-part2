@@ -36,6 +36,9 @@ public class InvoiceStore {
     @Column(name = "number")
     private Integer number;
 
+    @Column(name = "finalPrice")
+    private Double finalPrice;
+
     @Column(name = "date")
     private Date date;
 

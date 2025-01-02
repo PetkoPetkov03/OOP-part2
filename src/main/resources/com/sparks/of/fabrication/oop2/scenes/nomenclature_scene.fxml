@@ -2,7 +2,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.sparks.of.fabrication.oop2.scenes.Nomenclature_scene">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.sparks.of.fabrication.oop2.scenes.nomenclature.Nomenclature_scene">
     <center>
         <TableView fx:id="nomenclatureTable" style="-fx-padding: 10;">
             <columns>
@@ -13,9 +13,4 @@
             </columns>
         </TableView>
     </center>
-
-    <bottom>
-        <Label fx:id="statusLabel" text="Ready" style="-fx-padding: 10; -fx-alignment: center;" />
-    </bottom>
-
 </BorderPane>

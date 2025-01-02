@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.sparks.of.fabrication.oop2.scenes.ccheckout.CreateCheckout"
+            prefHeight="400.0" prefWidth="600.0">
+    <HBox spacing="20.0" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+
+        <VBox spacing="20.0">
+            <Label text="Enter Cash:"/>
+            <TextField fx:id="cashInput" promptText="Enter cash amount"/>
+
+            <Label text="Select Employee:"/>
+            <ComboBox fx:id="employeeComboBox" promptText="Choose employee"/>
+
+            <Button text="Create Checkout" onAction="#checkout"/>
+        </VBox>
+
+        <VBox spacing="20.0">
+            <Label text="Select Checkout:"/>
+            <ComboBox fx:id="allCheckoutsComboBox" promptText="Choose checkout"/>
+
+            <Label text="Checkout Money Contents:"/>
+            <TextField fx:id="checkoutMoneyField" promptText="Checkout's cash"/>
+
+            <Label text="Change Employee:"/>
+            <ComboBox fx:id="changeEmployeeComboBox" promptText="Select new employee"/>
+
+            <Button text="Update Checkout" onAction="#loadCheckoutDetails"/>
+        </VBox>
+
+    </HBox>
+</AnchorPane>
+
