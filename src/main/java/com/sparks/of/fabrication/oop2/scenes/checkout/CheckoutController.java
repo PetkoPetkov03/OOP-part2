@@ -14,7 +14,13 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Date;
 import java.time.LocalDate;
 
+/**
+ * Controller for managing the checkout process, including scanning items, handling transactions,
+ * and managing checkout cash. It interacts with `CheckoutServices` for the business logic
+ * and uses `LogEmployee` for logging and notifications.
+ */
 public class CheckoutController {
+
     @FXML private TableView<ScannedItem> scannedItemsTable;
     @FXML private TableColumn<ScannedItem, Long> idColumn;
     @FXML private TableColumn<ScannedItem, String> nameColumn;
@@ -37,6 +43,10 @@ public class CheckoutController {
 
     private double totalAmount = 0.0;
 
+    /**
+     * Initializes the checkout controller by setting up the scanned items table and client box,
+     * configuring the scan field, and loading the current checkout.
+     */
     @FXML
     public void initialize() throws NoSuchFieldException {
         try {
@@ -78,6 +88,10 @@ public class CheckoutController {
         }
     }
 
+    /**
+     * Handles adding a scanned item to the checkout.
+     * @param code The code of the item to be added.
+     */
     private void handleAddItem(String code) {
         try {
             Item item = checkoutServices.fetchItemByCode(code);
@@ -102,6 +116,10 @@ public class CheckoutController {
         }
     }
 
+    /**
+     * Handles removing a scanned item from the checkout.
+     * @param code The code of the item to be removed.
+     */
     private void handleRemoveItem(String code) {
         try {
             Item item = checkoutServices.fetchItemByCode(code);
@@ -122,6 +140,9 @@ public class CheckoutController {
         }
     }
 
+    /**
+     * Finishes the transaction
+     */
     private void finishTransaction() {
         try {
             Employee employee = Singleton.getInstance(Employee.class);
@@ -146,6 +167,10 @@ public class CheckoutController {
         }
     }
 
+    /**
+     * Checks if the checkout's cash balance is below the threshold (250), and if so,
+     * sends a notification and logs the event.
+     */
     private void checkAndNotifyLowCash() {
         try {
             if (checkout.getCash() < 250) {

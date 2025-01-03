@@ -18,8 +18,22 @@ import javafx.util.converter.LongStringConverter;
 import java.lang.reflect.Field;
 import java.util.List;
 
+/**
+ * Utility class to configure table columns and cell behaviors for arrival goods table views.
+ */
 public class TableViewSetup {
 
+    /**
+     * @param tableView       The table view for items.
+     * @param colCode         The column for item code (ID).
+     * @param colName         The column for item name.
+     * @param colMeasure      The column for item measure.
+     * @param AmsView         The table view for AmS data.
+     * @param colQuantity     The column for item quantity.
+     * @param colArrivalPrice The column for arrival price.
+     * @param colSellingPrice The column for selling price.
+     * @param SupplierBox     The combo box for selecting suppliers.
+     */
     public static void configureTableColumns(
             TableView<Item> tableView,
             TableColumn<Item, Long> colCode,
@@ -58,7 +72,6 @@ public class TableViewSetup {
         colArrivalPrice.prefWidthProperty().bind(tableView.widthProperty().multiply(0.40));
         colSellingPrice.prefWidthProperty().bind(tableView.widthProperty().multiply(0.40));
 
-
         AmsView.setEditable(true);
         colQuantity.setOnEditCommit(event -> {
             AmSData row = event.getRowValue();
@@ -78,9 +91,6 @@ public class TableViewSetup {
             AmsView.refresh();
         });
 
-
-
-
         colCode.setOnEditCommit(event -> {
             try {
                 Field name = Item.class.getDeclaredField("idItem");
@@ -95,6 +105,7 @@ public class TableViewSetup {
                 throw new RuntimeException(e);
             }
         });
+
         colName.setOnEditCommit(event -> {
             try {
                 Field name = Item.class.getDeclaredField("name");
@@ -109,6 +120,7 @@ public class TableViewSetup {
                 throw new RuntimeException(e);
             }
         });
+
         List<Suppliers> suppliers = entityManagerWrapper.findAllEntities(Suppliers.class);
         List<String> supplierNames = suppliers.stream()
                 .map(Suppliers::getName)
@@ -116,4 +128,3 @@ public class TableViewSetup {
         SupplierBox.setItems(FXCollections.observableArrayList(supplierNames));
     }
 }
-

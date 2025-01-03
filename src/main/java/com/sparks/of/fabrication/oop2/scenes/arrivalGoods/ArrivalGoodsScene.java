@@ -19,6 +19,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The controller for managing the Arrival Goods scene, handling the display and saving of items and invoice data.
+ */
 public class ArrivalGoodsScene {
 
     private static final Logger log = LogManager.getLogger(ArrivalGoodsScene.class);
@@ -47,6 +50,9 @@ public class ArrivalGoodsScene {
     private final Employee loggedInEmployee = Singleton.getInstance(Employee.class);
     private InvoiceStore currentInvoiceStore;
 
+    /**
+     * Initializes the ArrivalGoodsScene by setting up the table and date listeners.
+     */
     @FXML
     private void initialize() {
         log.info("Initializing ArrivalGoodsScene...");
@@ -68,11 +74,21 @@ public class ArrivalGoodsScene {
         cmbStatus.setValue(ArrivalState.Open);
     }
 
+    /**
+     * Loads the items from the database for a given date.
+     *
+     * @param selectedDate the date for which to load items
+     */
     private void loadItemsFromDatabase(LocalDate selectedDate) {
         log.info("Loading items from the database for date: {}", selectedDate);
         nomenclatureList = arrivalGoodsService.loadItems(selectedDate);
     }
 
+    /**
+     * Loads items and associated data for a specific nomenclature.
+     *
+     * @param currentIndex the index of the nomenclature
+     */
     private void loadItemsForNomenclature(int currentIndex) {
         try {
             itemList.clear();
@@ -92,6 +108,11 @@ public class ArrivalGoodsScene {
         }
     }
 
+    /**
+     * Handles the action for navigating to the first nomenclature.
+     *
+     * @param event the action event
+     */
     @FXML
     private void handleFirstButtonAction(ActionEvent event) {
         if (!nomenclatureList.isEmpty()) {
@@ -101,6 +122,11 @@ public class ArrivalGoodsScene {
         }
     }
 
+    /**
+     * Handles the action for navigating to the previous nomenclature.
+     *
+     * @param event the action event
+     */
     @FXML
     private void handlePreviousButtonAction(ActionEvent event) {
         if (currentIndex > 0) {
@@ -110,6 +136,11 @@ public class ArrivalGoodsScene {
         }
     }
 
+    /**
+     * Handles the action for navigating to the next nomenclature.
+     *
+     * @param event the action event
+     */
     @FXML
     private void handleNextButtonAction(ActionEvent event) {
         if (currentIndex < nomenclatureList.size() - 1) {
@@ -119,6 +150,11 @@ public class ArrivalGoodsScene {
         }
     }
 
+    /**
+     * Handles the action for navigating to the last nomenclature.
+     *
+     * @param event the action event
+     */
     @FXML
     private void handleLastButtonAction(ActionEvent event) {
         if (!nomenclatureList.isEmpty()) {
@@ -128,6 +164,11 @@ public class ArrivalGoodsScene {
         }
     }
 
+    /**
+     * Handles the action for creating a new nomenclature and setting up necessary data.
+     *
+     * @param event the action event
+     */
     @FXML
     private void handleNewButtonAction(ActionEvent event) {
         currentInvoiceStore = new InvoiceStore();
@@ -146,6 +187,12 @@ public class ArrivalGoodsScene {
         arrivalGoodsService.toggleTableEditability(currentInvoiceStore, arrivalTable, AmS);
     }
 
+    /**
+     * Handles the action for saving the current invoice store and related data.
+     *
+     * @param event the action event
+     * @throws NoSuchFieldException if a field cannot be found
+     */
     @FXML
     private void handleSaveButtonAction(ActionEvent event) throws NoSuchFieldException {
         if (currentInvoiceStore != null) {
@@ -163,6 +210,11 @@ public class ArrivalGoodsScene {
         }
     }
 
+    /**
+     * Handles the action for adding a new row to the arrival table.
+     *
+     * @param event the action event
+     */
     @FXML
     private void handleAddRow(ActionEvent event) {
         Item item = new Item();

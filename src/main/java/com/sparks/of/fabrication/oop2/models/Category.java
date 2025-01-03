@@ -10,6 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+/**
+ * Represents a category entity with an ID and name.
+ */
 @Entity
 @Table(name = "category")
 @Data
@@ -17,11 +20,17 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Category {
 
+    /**
+     * The unique identifier for the category.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_category", nullable = false)
     private Long idCategory;
 
+    /**
+     * The name of the category.
+     */
     @Column(name = "category", length = 20)
     private String category;
 }

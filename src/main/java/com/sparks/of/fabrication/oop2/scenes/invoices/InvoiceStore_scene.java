@@ -24,6 +24,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
 
+/**
+ * The InvoiceStore_scene class manages the invoice store scene, handling UI interactions,
+ * invoice data, and logging user actions.
+ */
 public class InvoiceStore_scene {
 
     @FXML
@@ -52,6 +56,9 @@ public class InvoiceStore_scene {
     @Getter
     private Nomenclature nomenclature;
 
+    /**
+     * Initializes the invoice store scene, sets up combo boxes and table columns and loads the invoice data.
+     */
     @FXML
     public void initialize() {
         log.info("Initializing InvoiceStore_scene.");
@@ -74,11 +81,20 @@ public class InvoiceStore_scene {
         });
     }
 
+    /**
+     * Loads the invoice data into the table.
+     */
     private void loadInvoiceData() {
         log.info("Loading invoice data into the table.");
         invoiceTable.setItems(FXCollections.observableArrayList(invoiceServices.loadInvoiceData()));
     }
 
+    /**
+     * Fetches the name of the employee based on the provided employee ID.
+     *
+     * @param employeeId the ID of the employee
+     * @return the name of the employee or "Unknown" if the ID is null
+     */
     protected String fetchEmployeeName(Long employeeId) {
         if (employeeId == null) {
             log.warn("Employee ID is null. Returning 'Unknown'.");
@@ -91,6 +107,9 @@ public class InvoiceStore_scene {
         return employeeName;
     }
 
+    /**
+     * Handles changes in the search criteria selection.
+     */
     @FXML
     private void onSearchByChanged() {
         SearchOption selectedOption = searchByComboBox.getValue();
@@ -123,6 +142,9 @@ public class InvoiceStore_scene {
         }
     }
 
+    /**
+     * Performs the search based on the selected criteria and updates the table with the filtered results.
+     */
     @FXML
     private void onSearch() {
         SearchOption searchBy = searchByComboBox.getValue();
@@ -153,6 +175,11 @@ public class InvoiceStore_scene {
         invoiceTable.refresh();
     }
 
+    /**
+     * Handles the selection of a row in the invoice table.
+     *
+     * @param selectedInvoice the selected invoice
+     */
     protected void onRowSelected(InvoiceStore selectedInvoice) {
         if (selectedInvoice != null) {
             log.info("Invoice selected: ID={}", selectedInvoice.getIdInvoice());
@@ -163,6 +190,9 @@ public class InvoiceStore_scene {
         }
     }
 
+    /**
+     * Loads the nomenclature scene in a new stage.
+     */
     private void loadNomenclatureScene() {
         try {
             log.info("Loading nomenclature scene.");

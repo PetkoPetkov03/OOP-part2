@@ -14,6 +14,9 @@ import javafx.scene.control.TableView;
 
 import java.util.List;
 
+/**
+ * The NotificationController class is responsible for managing and displaying notifications in the application.
+ */
 public class NotificationController {
 
     @FXML
@@ -39,6 +42,9 @@ public class NotificationController {
     private static final Logger log = LogManager.getLogger(NotificationController.class);
     private final LogEmployee logEmployee = Singleton.getInstance(LogEmployee.class);
 
+    /**
+     * Initializes the Notification Controller by setting up table columns and loading notifications.
+     */
     @FXML
     public void initialize() {
         log.info("Initializing Notification Controller.");
@@ -49,6 +55,9 @@ public class NotificationController {
         logEmployee.createLog("Scene Initialization", "Notification controller initialized.");
     }
 
+    /**
+     * Loads the notifications from the database and sets them in the table view.
+     */
     private void loadNotifications() {
         log.info("Loading notifications.");
 

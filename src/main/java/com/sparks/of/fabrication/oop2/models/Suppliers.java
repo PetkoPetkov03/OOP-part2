@@ -10,6 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+/**
+ * Represents a supplier entity.
+ */
 @Entity
 @Table(name = "suppliers")
 @Data
@@ -17,11 +20,17 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Suppliers {
 
+    /**
+     * The unique identifier for the supplier.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_supplier", nullable = false)
     private Long idSupplier;
 
+    /**
+     * The name of the supplier.
+     */
     @Column(name = "name", nullable = false, length = 20)
     private String name;
 }

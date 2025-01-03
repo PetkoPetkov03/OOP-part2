@@ -17,12 +17,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Wrapper class for managing JPA entity transactions and queries.
+ */
 public class EntityManagerWrapper {
 
     private static final Logger log = LogManager.getLogger(EntityManagerWrapper.class);
     EntityManagerFactory emf;
     EntityManager em;
 
+    /**
+     * Constructor that initializes the EntityManager and connects to the database using the provided environment settings.
+     *
+     * @param env The environment settings containing database connection details.
+     */
     public EntityManagerWrapper(Env env) {
         try {
             Map<String, String> properties = getProperties(env);
@@ -39,10 +47,16 @@ public class EntityManagerWrapper {
             }
 
         } catch (Exception e) {
-            log.error("Error Initializing Entity manager factory CAUSE: {} MESSAGE: {}" , e.getMessage(), e.getCause());
+            log.error("Error Initializing Entity manager factory CAUSE: {} MESSAGE: {}", e.getMessage(), e.getCause());
         }
     }
 
+    /**
+     * Gets the properties for the database connection from the given environment settings.
+     *
+     * @param env The environment settings containing database connection details.
+     * @return A map containing the properties required for database connection.
+     */
     @NotNull
     private static Map<String, String> getProperties(Env env) {
         Map<String, String> properties = new HashMap<>();
@@ -56,20 +70,39 @@ public class EntityManagerWrapper {
         return properties;
     }
 
+    /**
+     * Begins a new transaction in the EntityManager.
+     */
     private void beginTransaction() {
         em.getTransaction().begin();
     }
 
+    /**
+     * Commits the current transaction in the EntityManager.
+     */
     private void commitTransaction() {
         em.getTransaction().commit();
     }
 
+    /**
+     * Rolls back the current transaction in the EntityManager.
+     */
     private void rollbackTransaction() {
         em.getTransaction().rollback();
     }
 
+    /**
+     * Finds a single entity based on a field value.
+     *
+     * @param tClass The class of the entity to search for.
+     * @param field The field in the entity to match against.
+     * @param value The value to search for.
+     * @param <T> The type of the entity.
+     * @param <Y> The type of the field value.
+     * @return A Pair containing a success flag and the found entity.
+     */
     public <T, Y> Pair<Boolean, T> findEntityByVal(Class<T> tClass, Field field, Y value) {
-        try{
+        try {
             String jpql = "SELECT e FROM " + tClass.getSimpleName() + " e WHERE e." + field.getName() + " = :value";
             TypedQuery<T> query = this.em.createQuery(jpql, tClass);
             query.setParameter("value", value);
@@ -77,14 +110,24 @@ public class EntityManagerWrapper {
             T entity = query.getSingleResult();
 
             return new Pair<>(true, entity);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             return new Pair<>(false, null);
         }
     }
 
+    /**
+     * Finds all entities of a given class that match a field value.
+     *
+     * @param tClass The class of the entities to search for.
+     * @param field The field in the entity to match against.
+     * @param value The value to search for.
+     * @param <T> The type of the entity.
+     * @param <Y> The type of the field value.
+     * @return A Pair containing a success flag and the list of found entities.
+     */
     public <T, Y> Pair<Boolean, List<T>> findEntityByValAll(Class<T> tClass, Field field, Y value) {
-        try{
+        try {
             String jpql = "SELECT e FROM " + tClass.getSimpleName() + " e WHERE e." + field.getName() + " = :value";
             TypedQuery<T> query = this.em.createQuery(jpql, tClass);
             query.setParameter("value", value);
@@ -92,11 +135,22 @@ public class EntityManagerWrapper {
             List<T> entity = query.getResultList();
 
             return new Pair<>(true, entity);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             return new Pair<>(false, null);
         }
     }
+
+    /**
+     * Finds all entities of a given class that match a field value using the "LIKE" operator.
+     *
+     * @param tClass The class of the entities to search for.
+     * @param field The field in the entity to match against.
+     * @param value The value to search for.
+     * @param <T> The type of the entity.
+     * @param <Y> The type of the field value.
+     * @return A Pair containing a success flag and the list of found entities.
+     */
     public <T, Y> Pair<Boolean, List<T>> findEntityByValAllLikeR(Class<T> tClass, Field field, Y value) {
         try {
             String jpql = "SELECT e FROM " + tClass.getSimpleName() + " e WHERE e." + field.getName() + " LIKE :value";
@@ -112,6 +166,17 @@ public class EntityManagerWrapper {
             return new Pair<>(false, null);
         }
     }
+
+    /**
+     * Finds entities of a given class between two dates.
+     *
+     * @param tClass The class of the entities to search for.
+     * @param dateField The date field to match against.
+     * @param startDate The start date for the search range.
+     * @param endDate The end date for the search range.
+     * @param <T> The type of the entity.
+     * @return A Pair containing a success flag and the list of found entities.
+     */
     public <T> Pair<Boolean, List<T>> findEntitiesBetweenDates(Class<T> tClass, Field dateField, LocalDate startDate, LocalDate endDate) {
         try {
             String jpql = "SELECT e FROM " + tClass.getSimpleName() + " e WHERE e." + dateField.getName() + " BETWEEN :startDate AND :endDate";
@@ -128,8 +193,13 @@ public class EntityManagerWrapper {
         }
     }
 
-
-
+    /**
+     * Finds all entities of a given class.
+     *
+     * @param tClass The class of the entities to search for.
+     * @param <T> The type of the entity.
+     * @return A list containing all found entities.
+     */
     public <T> List<T> findAllEntities(Class<T> tClass) {
         try {
             String jpql = "SELECT e FROM " + tClass.getSimpleName() + " e";
@@ -141,6 +211,13 @@ public class EntityManagerWrapper {
         }
     }
 
+    /**
+     * Generates a new entity in the database.
+     *
+     * @param entity The entity to persist.
+     * @param <T> The type of the entity.
+     * @return A boolean indicating whether the operation was successful.
+     */
     public <T> boolean genEntity(T entity) {
         try {
             beginTransaction();
@@ -155,6 +232,14 @@ public class EntityManagerWrapper {
         }
     }
 
+    /**
+     * Finds an entity by its ID.
+     *
+     * @param tClass The class of the entity.
+     * @param id The ID of the entity.
+     * @param <T> The type of the entity.
+     * @return A Pair containing a success flag and the found entity.
+     */
     public <T> Pair<Boolean, T> findEntityById(Class<T> tClass, int id) {
         try {
             T entity = em.find(tClass, id);
@@ -168,6 +253,14 @@ public class EntityManagerWrapper {
         }
     }
 
+    /**
+     * Deletes an entity by its ID.
+     *
+     * @param tClass The class of the entity.
+     * @param id The ID of the entity.
+     * @param <T> The type of the entity.
+     * @return A boolean indicating whether the operation was successful.
+     */
     public <T> boolean deleteEntityById(Class<T> tClass, int id) {
         try {
             T entity = em.find(tClass, id);
@@ -184,6 +277,15 @@ public class EntityManagerWrapper {
         }
     }
 
+    /**
+     * Updates an entity by its fields.
+     *
+     * @param tClass The class of the entity.
+     * @param id The ID of the entity to update.
+     * @param data The map of fields and values to update.
+     * @param <T> The type of the entity.
+     * @return A boolean indicating whether the operation was successful.
+     */
     public <T> boolean updateEntityByFields(Class<T> tClass, int id, HashMap<Field, ?> data) {
         try {
             @NotNull
@@ -208,6 +310,14 @@ public class EntityManagerWrapper {
             return false;
         }
     }
+
+    /**
+     * Updates an entity in the database.
+     *
+     * @param entity The entity to update.
+     * @param <T> The type of the entity.
+     * @return A boolean indicating whether the operation was successful.
+     */
     public <T> boolean updateEntity(T entity) {
         try {
             beginTransaction();
@@ -221,6 +331,18 @@ public class EntityManagerWrapper {
             return false;
         }
     }
+
+    /**
+     * Finds entities with joins based on a field value.
+     *
+     * @param tClass The class of the entities to search for.
+     * @param field The field to match against.
+     * @param value The value to search for.
+     * @param joinFields The list of fields to join.
+     * @param <T> The type of the entity.
+     * @param <Y> The type of the field value.
+     * @return A Pair containing a success flag and the list of found entities.
+     */
     public <T, Y> Pair<Boolean, List<T>> findEntitiesWithJoins(Class<T> tClass, Field field, Y value, List<String> joinFields) {
         try {
             StringBuilder jpql = new StringBuilder("SELECT e FROM " + tClass.getSimpleName() + " e");
@@ -242,7 +364,11 @@ public class EntityManagerWrapper {
         }
     }
 
-
+    /**
+     * Cleans up the resources used by the EntityManager.
+     *
+     * @return A boolean indicating whether the cleanup was successful.
+     */
     public boolean cleanUp() {
         try {
             if(em != null && em.isOpen()) {
@@ -258,18 +384,4 @@ public class EntityManagerWrapper {
             return false;
         }
     }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -13,7 +13,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Controller class responsible for the employee creation scene.
+ */
 public class CreateEmployee_scene {
+
     @FXML private Label messages;
     @FXML private PasswordField passwordEmployeeField;
     @FXML private TextField emailEmployeeField;
@@ -27,6 +31,10 @@ public class CreateEmployee_scene {
     List<String> inputs;
     List<ValidationTypes> validationTypes;
 
+    /**
+     * Initializes the scene by setting up role options for the ComboBox
+     * and preparing input validation types for email and password fields.
+     */
     public void initialize() {
         inputs = new ArrayList<>();
         validationTypes = new ArrayList<>(List.of(new ValidationTypes[]{ValidationTypes.EMAIL, ValidationTypes.PASSWORD}));
@@ -34,19 +42,22 @@ public class CreateEmployee_scene {
         log.info("Roles loaded into the roleComboBox: {}", Arrays.toString(Role.values()));
     }
 
+    /**
+     * Creates a new employee entity
+     */
     public void createEmployee() {
         StringBuilder builder = new StringBuilder();
         builder.setLength(0);
         inputs.add(emailEmployeeField.getText());
         inputs.add(passwordEmployeeField.getText());
+
         Pair<Boolean, List<String>> validationResponse = userValidation.validate(validationTypes, inputs);
 
         createEmployeeServices.appendValidationMessages(builder, validationResponse);
-
         if (validationResponse.x()) {
             try {
                 createEmployeeServices.createAndPersistEmployee(passwordEmployeeField.getText(), emailEmployeeField.getText()
-                                                                ,nameField.getText(), roleComboBox);
+                        ,nameField.getText(), roleComboBox);
                 builder.setLength(0);
                 builder.append("Employee created!");
                 log.info("Employee created successfully: {}", nameField.getText());

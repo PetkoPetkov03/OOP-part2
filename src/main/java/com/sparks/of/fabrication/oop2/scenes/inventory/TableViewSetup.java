@@ -1,14 +1,24 @@
 package com.sparks.of.fabrication.oop2.scenes.inventory;
 
-
 import com.sparks.of.fabrication.oop2.models.Item;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class TableViewSetup {
-    
 
+    /**
+     * Configures the columns of the inventory table to display item details.
+     *
+     * @param inventoryTable the TableView of Item objects
+     * @param idItemColumn the TableColumn displaying the item ID
+     * @param nameColumn the TableColumn displaying the item name
+     * @param categoryColumn the TableColumn displaying the item category
+     * @param priceColumn the TableColumn displaying the item price
+     * @param arrivalPriceColumn the TableColumn displaying the arrival price
+     * @param quantityColumn the TableColumn displaying the item quantity
+     * @param inventoryController the controller that manages the inventory table and item interactions
+     */
     public static void configureTableColumns(TableView<Item> inventoryTable,
                                              TableColumn<Item, Long> idItemColumn,
                                              TableColumn<Item, String> nameColumn,
@@ -61,6 +71,5 @@ public class TableViewSetup {
         });
         inventoryController.getSearchField().setText(" ");
         inventoryController.getSearchField().setText("");
-
     }
 }

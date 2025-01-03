@@ -14,7 +14,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Field;
 
+/**
+ * Controller for the EmployeeLogs scene. Controller for the EmployeeLogs scene initializing the scene,
+ * configuring the table to display employee logs, and loading employee data and logs.
+ */
 public class EmployeeLogs {
+
     @FXML private TableView<EmployeeLog> employeeLogsTable;
     @FXML private TableColumn<EmployeeLog, Long> logId;
     @FXML private TableColumn<EmployeeLog, String> employee;
@@ -27,6 +32,10 @@ public class EmployeeLogs {
     private static final Logger log = LogManager.getLogger(EmployeeLogs.class);
     private final LogEmployee logEmployee = Singleton.getInstance(LogEmployee.class);
 
+    /**
+     * Initializes the EmployeeLogs scene, sets up the table columns, configures the comboBox
+     * for selecting employees, and loads the employee data.
+     */
     @FXML
     private void initialize() {
         try {
@@ -64,6 +73,9 @@ public class EmployeeLogs {
         }
     }
 
+    /**
+     * Loads the list of employees into the employee comboBox.
+     */
     private void loadEmployees() {
         try {
             log.info("Loading employees into the ComboBox.");
@@ -75,6 +87,12 @@ public class EmployeeLogs {
         }
     }
 
+    /**
+     * Loads the logs for the selected employee and populates the logs table.
+     *
+     * @param selectedEmployee The selected employee for whom the logs are being loaded.
+     * @throws NoSuchFieldException If the employee field is not found in the EmployeeLog class.
+     */
     private void loadLogs(Employee selectedEmployee) throws NoSuchFieldException {
         try {
             if (selectedEmployee == null) {
