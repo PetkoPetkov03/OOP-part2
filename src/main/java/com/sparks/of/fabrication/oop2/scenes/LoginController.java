@@ -8,12 +8,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Logger;
-
 import org.apache.logging.log4j.LogManager;
-
 import com.sparks.of.fabrication.oop2.utils.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
+/**
+ * The LoginController class manages the login functionality, verifying user credentials and transitioning to the main scene.
+ */
 public class LoginController {
 
     private final Logger log = LogManager.getLogger(LoginController.class);
@@ -27,6 +28,9 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
+    /**
+     * Checks the entered credentials, verifies the user against the database, and transitions to the main scene if valid.
+     */
     @FXML
     protected void checkCredentials() {
         String user = username.getText();
@@ -44,6 +48,7 @@ public class LoginController {
                 loggedInEmployee = employeeResult.y();
                 LogEmployee.initializeLogEmployee();
                 Singleton.getInstance(Employee.class, loggedInEmployee);
+
                 if (BCrypt.checkpw(password, loggedInEmployee.getPassword())) {
                     loader.loadScene("scenes/manager_scene.fxml", 500, 300, "Main", false, new Stage());
                     username.getScene().getWindow().hide();
@@ -59,6 +64,12 @@ public class LoginController {
             showAlert("An error occurred during login");
         }
     }
+
+    /**
+     * Displays an alert with the specified message.
+     *
+     * @param message The message to be shown in the alert.
+     */
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Input Error");
@@ -67,4 +78,3 @@ public class LoginController {
         alert.showAndWait();
     }
 }
-

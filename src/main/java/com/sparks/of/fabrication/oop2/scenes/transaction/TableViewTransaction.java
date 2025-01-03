@@ -7,8 +7,25 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * The TableViewTransaction class is responsible for configuring the columns of the transaction and transaction details tables.
+ */
 public class TableViewTransaction {
 
+    /**
+     * Configures the columns for the transaction and transaction details tables.
+     *
+     * @param transactionTable           The table displaying transactions.
+     * @param idColumn                  The column for the transaction ID.
+     * @param clientColumn              The column for the client's name.
+     * @param employeeColumn            The column for the employee's name.
+     * @param checkoutColumn            The column for the checkout ID.
+     * @param totalAmountColumn         The column for the total amount of the transaction.
+     * @param transactionDetailsTable   The table displaying transaction details.
+     * @param itemColumn                The column for the item name in transaction details.
+     * @param quantityColumn            The column for the quantity in transaction details.
+     * @param priceColumn               The column for the price of each item in transaction details.
+     */
     public static void configureTableColumns(TableView<Transaction> transactionTable,
                                              TableColumn<Transaction, Long> idColumn,
                                              TableColumn<Transaction, String> clientColumn,

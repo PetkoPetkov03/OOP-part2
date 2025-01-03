@@ -8,8 +8,23 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * The TableViewStatistic class configures the columns for displaying transaction and invoice data in a table view.
+ */
 public class TableViewStatistic {
 
+    /**
+     * Configures the columns for displaying transaction and invoice data in the respective tables.
+     *
+     * @param transactionTable         the table to display transaction data
+     * @param transactionIdColumn      the column to display transaction IDs
+     * @param transactionPriceColumn   the column to display transaction total amounts
+     * @param transactionDateColumn    the column to display transaction dates
+     * @param invoiceTable             the table to display invoice data
+     * @param invoiceIdColumn          the column to display invoice IDs
+     * @param nomenclatureIdColumn     the column to display nomenclature IDs
+     * @param nomenclaturePriceColumn  the column to display nomenclature final prices
+     */
     public static void configureTableColumns(TableView<Transaction> transactionTable,
                                              TableColumn<Transaction, Long> transactionIdColumn,
                                              TableColumn<Transaction, Double> transactionPriceColumn,
@@ -36,7 +51,4 @@ public class TableViewStatistic {
         nomenclatureIdColumn.prefWidthProperty().bind(invoiceTable.widthProperty().multiply(0.40));
         nomenclaturePriceColumn.prefWidthProperty().bind(invoiceTable.widthProperty().multiply(0.40));
     }
-
-
 }
-

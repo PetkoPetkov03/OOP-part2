@@ -12,6 +12,9 @@ import javafx.scene.control.*;
 
 import java.time.LocalDate;
 
+/**
+ * The StatisticController class manages the display and calculations of statistics for transactions and invoices.
+ */
 public class StatisticController {
 
     @FXML
@@ -50,6 +53,9 @@ public class StatisticController {
     private static final Logger log = LogManager.getLogger(StatisticController.class);
     private final LogEmployee logEmployee = Singleton.getInstance(LogEmployee.class);
 
+    /**
+     * Initializes the StatisticController by configuring the table columns and logging the initialization process.
+     */
     @FXML
     private void initialize() {
         statisticServices = new StatisticServices();
@@ -60,6 +66,9 @@ public class StatisticController {
         logEmployee.createLog("Initialization", "Statistic controller initialized.");
     }
 
+    /**
+     * Handles the click event for the "Load Data" button by loading statistics based on the selected date range.
+     */
     @FXML
     private void handleLoadDataButton() {
         LocalDate startDate = startDatePicker.getValue();

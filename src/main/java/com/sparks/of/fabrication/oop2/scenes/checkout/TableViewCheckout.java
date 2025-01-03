@@ -3,14 +3,28 @@ package com.sparks.of.fabrication.oop2.scenes.checkout;
 import com.sparks.of.fabrication.oop2.models.Client;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.StringConverter;
 
+/**
+ * A utility class that helps configure the columns of a TableView for displaying
+ * scanned items during the checkout process
+ */
 public class TableViewCheckout {
+
+    /**
+     * Configures the columns of the given TableView and ComboBox.
+     * Sets the cell value factories for the columns in the TableView to display
+     *
+     * @param scannedItemsTable The TableView displaying the scanned items.
+     * @param idColumn The TableColumn for displaying the ID of the scanned item.
+     * @param nameColumn The TableColumn for displaying the name of the scanned item.
+     * @param priceColumn The TableColumn for displaying the price of the scanned item.
+     * @param quantityColumn The TableColumn for displaying the quantity of the scanned item.
+     * @param clientBox The ComboBox for selecting a client.
+     */
     public static void configureTableColumns(TableView<ScannedItem> scannedItemsTable,
                                              TableColumn<ScannedItem, Long> idColumn,
                                              TableColumn<ScannedItem, String> nameColumn,

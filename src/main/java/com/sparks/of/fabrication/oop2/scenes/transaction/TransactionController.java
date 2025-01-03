@@ -11,6 +11,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+/**
+ * The TransactionController class handles the transaction-related operations and UI actions
+ */
 public class TransactionController {
 
     @FXML
@@ -42,6 +45,9 @@ public class TransactionController {
     private static final Logger log = LogManager.getLogger(TransactionController.class);
     private final LogEmployee logEmployee = Singleton.getInstance(LogEmployee.class);
 
+    /**
+     * Initializes the TransactionController by configuring table columns, adding event listeners, and loading transaction data.
+     */
     @FXML
     private void initialize() {
         TableViewTransaction.configureTableColumns(transactionTable, idColumn, clientColumn, employeeColumn, checkoutColumn, totalAmountColumn, transactionDetailsTable, itemColumn, quantityColumn, priceColumn);

@@ -6,7 +6,20 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * The TableViewNomenclature class is responsible for configuring the columns in the Nomenclature Details table.
+ */
 public class TableViewNomenclature {
+
+    /**
+     * Configures the columns for the Nomenclature Details table.
+     *
+     * @param nomenclatureTable The table to configure columns for.
+     * @param idDetailsColumn The column for displaying the ID of the nomenclature details.
+     * @param itemColumn The column for displaying the item name.
+     * @param quantityColumn The column for displaying the quantity of the item.
+     * @param priceColumn The column for displaying the price of the item.
+     */
     public static void configureTableColumns(TableView<NomenclatureDetails> nomenclatureTable,
                                              TableColumn<NomenclatureDetails, Long> idDetailsColumn,
                                              TableColumn<NomenclatureDetails, String> itemColumn,

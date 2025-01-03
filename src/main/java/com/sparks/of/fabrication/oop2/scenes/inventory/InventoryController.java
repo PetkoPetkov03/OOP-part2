@@ -1,5 +1,5 @@
 package com.sparks.of.fabrication.oop2.scenes.inventory;
-//NEEDS UPDATE
+
 import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.*;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
@@ -14,20 +14,29 @@ import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Field;
 
+/**
+ * Controller for managing the inventory UI, allowing for the display, creation, updating, and deletion of inventory items.
+ */
 public class InventoryController {
 
     @FXML
     private TableView<Item> inventoryTable;
+
     @FXML
     private TableColumn<Item, Long> idItemColumn;
+
     @FXML
     private TableColumn<Item, String> nameColumn;
+
     @FXML
     private TableColumn<Item, String> categoryColumn;
+
     @FXML
     private TableColumn<Item, Double> priceColumn;
+
     @FXML
     private TableColumn<Item, Double> arrivalPriceColumn;
+
     @FXML
     private TableColumn<Item, Integer> quantityColumn;
 
@@ -37,6 +46,7 @@ public class InventoryController {
 
     @FXML
     private ComboBox<String> categoryComboBox;
+
     @FXML
     private ComboBox<String> catCliSupComboBox;
 
@@ -44,6 +54,7 @@ public class InventoryController {
     @Getter
     @Setter
     private Button saveButton;
+
     @FXML
     private Button catCliSupCreate, catCliSupDelete;
 
@@ -55,11 +66,16 @@ public class InventoryController {
     @Getter
     @Setter
     private boolean isEditMode = false;
+
     private int catCliSup;
+
     @Getter
     @Setter
     private Item currentItem;
 
+    /**
+     * Initializes the controller, setting up the table columns and loading categories.`
+     */
     @FXML
     public void initialize() {
         try {
@@ -74,6 +90,12 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Loads the items into the inventory table based on the provided search text.
+     *
+     * @param text The search text to filter items.
+     * @throws NoSuchFieldException if the specified field cannot be found during the loading process.
+     */
     protected void loadItems(String text) throws NoSuchFieldException {
         try {
             log.info("Loading items with search text: {}", text);
@@ -85,6 +107,11 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Populates the fields with the data from the provided item.
+     *
+     * @param item The item whose data will populate the fields.
+     */
     protected void populateFields(Item item) {
         try {
             log.info("Populating fields for item: {}", item.getName());
@@ -100,6 +127,9 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Clears all input fields in the inventory form.
+     */
     protected void clearFields() {
         log.info("Clearing all input fields.");
         idField.clear();
@@ -110,6 +140,11 @@ public class InventoryController {
         categoryComboBox.setValue(null);
     }
 
+    /**
+     * Saves or updates the item based on the current mode.
+     *
+     * @throws NoSuchFieldException if an error occurs while accessing fields during the save or update.
+     */
     @FXML
     protected void saveOrUpdateItem() throws NoSuchFieldException {
         if (isEditMode) {
@@ -119,6 +154,11 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Updates an existing item with the data from the input fields.
+     *
+     * @throws NoSuchFieldException if an error occurs while accessing fields during the update.
+     */
     private void updateItem() throws NoSuchFieldException {
         try {
             log.info("Updating item: {}", currentItem.getName());
@@ -141,6 +181,11 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Creates a new item with the data from the input fields.
+     *
+     * @throws NoSuchFieldException if an error occurs while accessing fields during the creation.
+     */
     private void createNewItem() throws NoSuchFieldException {
         try {
             log.info("Creating a new item: {}", nameField.getText());
@@ -162,6 +207,9 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Deletes an item from the inventory based on its ID.
+     */
     @FXML
     private void deleteItem() {
         try {
@@ -184,6 +232,9 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Loads categories into the ComboBox for category selection.
+     */
     @FXML
     private void BCat() {
         try {
@@ -195,6 +246,9 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Loads suppliers into the ComboBox for supplier selection.
+     */
     @FXML
     private void BSup() {
         try {
@@ -206,6 +260,9 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Loads clients into the ComboBox for client selection.
+     */
     @FXML
     private void BCli() {
         try {
@@ -217,6 +274,9 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Creates a new category, supplier, or client based on the input in the text field.
+     */
     @FXML
     private void catCliSupCreate() {
         try {
@@ -230,6 +290,11 @@ public class InventoryController {
         }
     }
 
+    /**
+     * Deletes a category, supplier, or client based on the selected value in the ComboBox.
+     *
+     * @throws NoSuchFieldException if an error occurs while accessing fields during the deletion.
+     */
     @FXML
     private void catCliSupDelete() throws NoSuchFieldException {
         try {

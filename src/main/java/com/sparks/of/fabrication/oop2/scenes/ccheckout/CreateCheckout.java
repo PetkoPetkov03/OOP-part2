@@ -13,28 +13,44 @@ import javafx.scene.control.TextField;
 
 import java.util.List;
 
+/**
+ * Controller class for creating and managing checkouts in the application.
+ * This class handles the creation and update of checkout records, populating
+ * combo boxes with employees and checkout details, and handling user input
+ * for checkout operations.
+ */
 public class CreateCheckout {
+
     @FXML private TextField cashInput;
     @FXML private ComboBox<String> employeeComboBox;
     @FXML private ComboBox<String> allCheckoutsComboBox;
     @FXML private TextField checkoutMoneyField;
     @FXML private ComboBox<String> changeEmployeeComboBox;
+
     private final CheckoutServices checkoutService = new CheckoutServices();
     private static final Logger log = LogManager.getLogger(CreateCheckout.class);
     private static final LogEmployee logEmployee = Singleton.getInstance(LogEmployee.class);
 
+    /**
+     * Initializes the CreateCheckout view, populating the combo boxes for
+     * employees and checkouts, and handling any initialization errors.
+     */
     @FXML
     private void initialize() {
         try {
             populateEmployeeComboBox();
             populateCheckoutComboBox();
-            populateChangeEmployeeComboBox(); // Populate the new ComboBox
+            populateChangeEmployeeComboBox();
         } catch (Exception e) {
             log.error("Error initializing CreateCheckout: ", e);
             logEmployee.createLog("Initialization Error", e.getMessage());
         }
     }
 
+    /**
+     * Populates the employee combo box with a list of all employee names
+     * retrieved from the checkout service.
+     */
     private void populateEmployeeComboBox() {
         try {
             List<String> employeeNames = checkoutService.getAllEmployeeNames();
@@ -45,6 +61,10 @@ public class CreateCheckout {
             logEmployee.createLog("Error Populating Employee ComboBox", e.getMessage());
         }
     }
+
+    /**
+     * Populates the change employee combo box with a list of all employee names.
+     */
     private void populateChangeEmployeeComboBox() {
         try {
             List<String> employeeNames = checkoutService.getAllEmployeeNames();
@@ -56,6 +76,10 @@ public class CreateCheckout {
         }
     }
 
+    /**
+     * Populates the checkout combo box with a list of all checkout descriptions
+     * retrieved from the checkout service.
+     */
     private void populateCheckoutComboBox() {
         try {
             List<String> checkoutDescriptions = checkoutService.getAllCheckoutsDescriptions();
@@ -67,6 +91,13 @@ public class CreateCheckout {
         }
     }
 
+    /**
+     * Creates a new checkout record with the selected employee and cash input.
+     * It also logs the operation and updates the checkout combo box.
+     *
+     * @throws IllegalArgumentException if no employee is selected or if the
+     *         cash input is invalid.
+     */
     @FXML
     private void checkout() {
         try {
@@ -89,6 +120,10 @@ public class CreateCheckout {
         }
     }
 
+    /**
+     * Loads the details of a selected checkout and updates the checkout information.
+     * This method allows changing the employee and cash amount for an existing checkout.
+     */
     @FXML
     private void loadCheckoutDetails() {
         try {
@@ -123,6 +158,13 @@ public class CreateCheckout {
         }
     }
 
+    /**
+     * Parses the cash input value from the text field and returns it as a double.
+     *
+     * @param cashInput The cash input value as a string.
+     * @return The parsed cash amount as a double.
+     * @throws IllegalArgumentException if the cash input format is invalid.
+     */
     private double parseCashInput(String cashInput) {
         if (!checkoutService.isValidCashInput(cashInput)) {
             throw new IllegalArgumentException("Invalid cash input format.");

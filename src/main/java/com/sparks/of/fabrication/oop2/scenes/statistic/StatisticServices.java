@@ -13,10 +13,22 @@ import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * The StatisticServices class handles loading and calculating statistics for transactions and invoices within a date range.
+ */
 public class StatisticServices {
 
     private final EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
 
+    /**
+     * Loads and calculates statistics for transactions and invoices in the specified date range and updates the tables.
+     *
+     * @param startDate       the start date of the date range
+     * @param endDate         the end date of the date range
+     * @param transactionTable the table to display the transaction data
+     * @param invoiceTable     the table to display the invoice data
+     * @return a pair of total transactions and total invoices amounts
+     */
     public Pair<Double, Double> loadAndCalculateStatistics(LocalDate startDate, LocalDate endDate,
                                                            TableView<Transaction> transactionTable,
                                                            TableView<InvoiceStore> invoiceTable) {
@@ -25,6 +37,14 @@ public class StatisticServices {
         return new Pair<>(totalTransactions, totalInvoices);
     }
 
+    /**
+     * Loads transaction data between the specified dates.
+     *
+     * @param startDate        the start date of the date range
+     * @param endDate          the end date of the date range
+     * @param transactionTable the table to display the transaction data
+     * @return the sum of the transaction amounts
+     */
     private double loadTransactionData(LocalDate startDate, LocalDate endDate, TableView<Transaction> transactionTable) {
         try {
             Field transactionDateField = Transaction.class.getDeclaredField("transactionDate");
@@ -42,6 +62,14 @@ public class StatisticServices {
         return 0;
     }
 
+    /**
+     * Loads invoice data between the specified dates.
+     *
+     * @param startDate       the start date of the date range
+     * @param endDate         the end date of the date range
+     * @param invoiceTable    the table to display the invoice data
+     * @return the sum of the invoice final prices
+     */
     private double loadInvoiceData(LocalDate startDate, LocalDate endDate, TableView<InvoiceStore> invoiceTable) {
         try {
             Field dateField = InvoiceStore.class.getDeclaredField("date");

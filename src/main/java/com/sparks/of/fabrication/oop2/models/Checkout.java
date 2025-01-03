@@ -12,6 +12,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+/**
+ * Represents a checkout entity
+ */
 @Entity
 @Table(name = "checkout")
 @Data
@@ -19,15 +22,24 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Checkout {
 
+    /**
+     * The unique identifier for the checkout.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_checkout", nullable = false)
     private Long idCheckout;
 
+    /**
+     * The employee associated with this checkout.
+     */
     @ManyToOne
     @JoinColumn(name = "id_employee", nullable = false)
     private Employee employee;
 
+    /**
+     * The cash amount associated with the checkout.
+     */
     @Column(name = "cash")
     private Double cash;
 }
