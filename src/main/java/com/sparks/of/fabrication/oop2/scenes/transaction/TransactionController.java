@@ -3,7 +3,7 @@ package com.sparks.of.fabrication.oop2.scenes.transaction;
 import com.sparks.of.fabrication.oop2.models.Transaction;
 import com.sparks.of.fabrication.oop2.models.TransactionDetail;
 import com.sparks.of.fabrication.oop2.utils.LogEmployee;
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.fxml.FXML;

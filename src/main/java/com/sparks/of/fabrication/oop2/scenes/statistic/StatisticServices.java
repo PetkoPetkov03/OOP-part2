@@ -1,6 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes.statistic;
 
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.InvoiceStore;
 import com.sparks.of.fabrication.oop2.models.Transaction;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;

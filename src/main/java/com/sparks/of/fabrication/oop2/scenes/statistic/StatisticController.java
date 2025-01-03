@@ -4,7 +4,7 @@ import com.sparks.of.fabrication.oop2.models.InvoiceStore;
 import com.sparks.of.fabrication.oop2.models.Transaction;
 import com.sparks.of.fabrication.oop2.utils.Pair;
 import com.sparks.of.fabrication.oop2.utils.LogEmployee;
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.fxml.FXML;

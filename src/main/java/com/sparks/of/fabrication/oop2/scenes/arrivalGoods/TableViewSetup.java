@@ -1,7 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes.arrivalGoods;
 
-import com.sparks.of.fabrication.oop2.Singleton;
-import com.sparks.of.fabrication.oop2.models.Category;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.Item;
 import com.sparks.of.fabrication.oop2.models.Suppliers;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;

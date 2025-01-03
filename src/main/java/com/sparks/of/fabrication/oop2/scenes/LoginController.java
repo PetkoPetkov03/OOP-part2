@@ -1,6 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes;
 
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.Employee;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -14,9 +14,9 @@ import org.apache.logging.log4j.LogManager;
 import com.sparks.of.fabrication.oop2.utils.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-public class Main_scene {
+public class LoginController {
 
-    private final Logger log = LogManager.getLogger(Main_scene.class);
+    private final Logger log = LogManager.getLogger(LoginController.class);
     private final SceneLoader loader = Singleton.getInstance(SceneLoader.class);
     private final EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
     private static Employee loggedInEmployee = Singleton.getInstance(Employee.class);

@@ -1,7 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes.nomenclature;
 
-import com.sparks.of.fabrication.oop2.Singleton;
-import com.sparks.of.fabrication.oop2.models.Item;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.Nomenclature;
 import com.sparks.of.fabrication.oop2.models.NomenclatureDetails;
 import com.sparks.of.fabrication.oop2.scenes.invoices.InvoiceStore_scene;
@@ -13,10 +12,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 public class Nomenclature_scene {
 

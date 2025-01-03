@@ -1,13 +1,12 @@
 package com.sparks.of.fabrication.oop2.scenes;
 
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.Employee;
 import com.sparks.of.fabrication.oop2.users.Role;
 import com.sparks.of.fabrication.oop2.utils.LogEmployee;
 import com.sparks.of.fabrication.oop2.utils.RoleValidator;
 import com.sparks.of.fabrication.oop2.utils.SceneLoader;
 import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -17,10 +16,10 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class Manager_scene {
+public class MainController {
     private SceneLoader loader = Singleton.getInstance(SceneLoader.class);
     private LogEmployee logEmployee = Singleton.getInstance(LogEmployee.class);
-    private static final Logger log = LogManager.getLogger(Manager_scene.class);
+    private static final Logger log = LogManager.getLogger(MainController.class);
     private Employee loggedEmployee = Singleton.getInstance(Employee.class);
     private RoleValidator roleValidator = new RoleValidator();
     private Screen screen = Screen.getPrimary();
@@ -37,7 +36,7 @@ public class Manager_scene {
 
     @FXML
     private void handleNotification() throws IOException {
-        if(RoleValidator.areRolesValid(loggedEmployee.getRole().getRole(), Arrays.asList(Role.ADMIN, Role.MANAGER)))
+        if(!RoleValidator.areRolesValid(loggedEmployee.getRole().getRole(), Arrays.asList(Role.ADMIN, Role.MANAGER)))
             return;
         logAction("Loading notification window");
         loader.loadScene("scenes/notification_window.fxml", 400, 400, "Notifications", true, otherStage);
@@ -94,7 +93,7 @@ public class Manager_scene {
         if(!RoleValidator.areRolesValid(loggedEmployee.getRole().getRole(), Arrays.asList(Role.ADMIN, Role.MANAGER)))
             return;
         logAction("Loading transactions window");
-        loader.loadScene("scenes/transaction_scene.fxml", screen.getBounds().getWidth(), screen.getBounds().getHeight(), "Employees", true, otherStage);
+        loader.loadScene("scenes/transaction_scene.fxml", screen.getBounds().getWidth(), screen.getBounds().getHeight(), "Transactions", true, otherStage);
         otherStage.hide();
         otherStage.showAndWait();
     }
@@ -114,7 +113,7 @@ public class Manager_scene {
         if(!RoleValidator.areRolesValid(loggedEmployee.getRole().getRole(),Role.ADMIN))
             return;
         logAction("Loading Create Cash Register window");
-        loader.loadScene("scenes/createCheckout.fxml", 400, 300, "Create Cash Register", false, otherStage);
+        loader.loadScene("scenes/createCheckout.fxml", 400, 300, "Create Checkout", false, otherStage);
         otherStage.hide();
         otherStage.showAndWait();
     }

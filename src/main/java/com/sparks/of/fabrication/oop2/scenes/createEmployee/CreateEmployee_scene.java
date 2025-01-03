@@ -1,6 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes.createEmployee;
 
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.users.Role;
 import com.sparks.of.fabrication.oop2.utils.*;
 import javafx.collections.FXCollections;

@@ -1,6 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes.inventory;
 //NEEDS UPDATE
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.*;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.utils.LogEmployee;
@@ -166,6 +166,9 @@ public class InventoryController {
     private void deleteItem() {
         try {
             log.info("Deleting item with ID: {}", idField.getText());
+            Field field1 = NomenclatureDetails.class.getDeclaredField("item");
+            Field field2 = TransactionDetail.class.getDeclaredField("item");
+            inventoryServices.CascadeConnections(entityManagerWrapper.findEntityById(Item.class,Integer.parseInt(idField.getText())).y(),field1,field2);
             boolean success = entityManagerWrapper.deleteEntityById(Item.class, Integer.parseInt(idField.getText()));
             if (success) {
                 log.info("Item deleted successfully with ID: {}", idField.getText());

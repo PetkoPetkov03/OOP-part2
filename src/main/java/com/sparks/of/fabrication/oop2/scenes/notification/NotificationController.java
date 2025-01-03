@@ -2,7 +2,7 @@ package com.sparks.of.fabrication.oop2.scenes.notification;
 
 import com.sparks.of.fabrication.oop2.models.Notification;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.utils.LogEmployee;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +11,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
 

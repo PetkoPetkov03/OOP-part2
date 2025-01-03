@@ -5,6 +5,7 @@ import com.sparks.of.fabrication.oop2.utils.SceneLoader;
 import com.sparks.of.fabrication.oop2.users.Role;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.utils.Env;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
