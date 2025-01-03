@@ -1,12 +1,11 @@
 package com.sparks.of.fabrication.oop2.scenes.invoices;
 
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.Employee;
 import com.sparks.of.fabrication.oop2.models.InvoiceStore;
 import com.sparks.of.fabrication.oop2.models.Nomenclature;
 import com.sparks.of.fabrication.oop2.models.Suppliers;
 import com.sparks.of.fabrication.oop2.scenes.inventory.InventoryController;
-import com.sparks.of.fabrication.oop2.scenes.invoices.SearchOption;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.utils.LogEmployee;
 import com.sparks.of.fabrication.oop2.utils.SceneLoader;

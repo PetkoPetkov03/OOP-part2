@@ -1,6 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes.createEmployee;
 
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.Employee;
 import com.sparks.of.fabrication.oop2.models.RoleModel;
 import com.sparks.of.fabrication.oop2.users.Role;

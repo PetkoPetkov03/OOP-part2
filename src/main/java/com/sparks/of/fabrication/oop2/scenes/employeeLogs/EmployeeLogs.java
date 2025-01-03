@@ -1,6 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes.employeeLogs;
 
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.Employee;
 import com.sparks.of.fabrication.oop2.models.EmployeeLog;
 import com.sparks.of.fabrication.oop2.utils.LogEmployee;

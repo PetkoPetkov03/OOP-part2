@@ -1,10 +1,7 @@
 package com.sparks.of.fabrication.oop2.scenes.inventory;
 
-import com.sparks.of.fabrication.oop2.Singleton;
-import com.sparks.of.fabrication.oop2.models.Category;
-import com.sparks.of.fabrication.oop2.models.Client;
-import com.sparks.of.fabrication.oop2.models.Item;
-import com.sparks.of.fabrication.oop2.models.Suppliers;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
+import com.sparks.of.fabrication.oop2.models.*;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -103,6 +100,16 @@ public class InventoryServices {
                 Client client = entityManagerWrapper.findEntityByVal(Client.class,field,catCliSupComboBox.getValue()).y();
                 entityManagerWrapper.deleteEntityById(Client.class,client.getId().intValue());
             }
+        }
+    }
+    protected void CascadeConnections(Item item,Field field1,Field field2) throws NoSuchFieldException {
+        List<NomenclatureDetails> s = entityManagerWrapper.findEntityByValAll(NomenclatureDetails.class,field1,item).y();
+        List<TransactionDetail> x = entityManagerWrapper.findEntityByValAll(TransactionDetail.class,field2,item).y();
+        for (NomenclatureDetails detail : s) {
+            entityManagerWrapper.deleteEntityById(NomenclatureDetails.class,detail.getIdNomDetails().intValue());
+        }
+        for (TransactionDetail detail : x) {
+            entityManagerWrapper.deleteEntityById(TransactionDetail.class,detail.getId().intValue());
         }
     }
 }

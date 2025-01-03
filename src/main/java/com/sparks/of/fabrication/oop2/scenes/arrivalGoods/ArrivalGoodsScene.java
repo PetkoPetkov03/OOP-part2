@@ -1,6 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes.arrivalGoods;
 
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.*;
 import com.sparks.of.fabrication.oop2.utils.EntityManagerWrapper;
 import com.sparks.of.fabrication.oop2.utils.Pair;
@@ -33,19 +33,10 @@ public class ArrivalGoodsScene {
     @FXML private TableColumn<AmSData, Integer> colQuantity;
     @FXML private TableColumn<AmSData, Double> colArrivalPrice;
     @FXML private TableColumn<AmSData, Double> colSellingPrice;
-    @FXML private DatePicker dateDocument;
     @FXML private TextField txtDocumentNumber;
     @FXML private ComboBox<String> SupplierBox;
     @FXML private DatePicker lblSystemDate;
     @FXML private ComboBox<ArrivalState> cmbStatus;
-    @FXML private Button btnFirst;
-    @FXML private Button btnPrevious;
-    @FXML private Button btnNext;
-    @FXML private Button btnLast;
-    @FXML private Button btnNew;
-    @FXML private Button btnCancel;
-    @FXML private Button btnSave;
-    @FXML private Button btnAddRow;
 
     private int currentIndex = -1;
     private List<Nomenclature> nomenclatureList;

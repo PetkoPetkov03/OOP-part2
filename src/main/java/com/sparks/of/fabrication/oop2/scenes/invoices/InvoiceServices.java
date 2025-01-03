@@ -1,6 +1,6 @@
 package com.sparks.of.fabrication.oop2.scenes.invoices;
 
-import com.sparks.of.fabrication.oop2.Singleton;
+import com.sparks.of.fabrication.oop2.utils.Singleton;
 import com.sparks.of.fabrication.oop2.models.Employee;
 import com.sparks.of.fabrication.oop2.models.InvoiceStore;
 import com.sparks.of.fabrication.oop2.models.Nomenclature;
@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.sparks.of.fabrication.oop2.scenes.invoices.SearchOption;
 public class InvoiceServices {
     private EntityManagerWrapper entityManagerWrapper = Singleton.getInstance(EntityManagerWrapper.class);
 
