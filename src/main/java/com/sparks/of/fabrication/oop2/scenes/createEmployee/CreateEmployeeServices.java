@@ -44,7 +44,7 @@ public class CreateEmployeeServices {
      * @param roleComboBox The ComboBox containing the role for the new employee.
      * @throws NoSuchFieldException If the field required for fetching the role is not found.
      */
-    protected void createAndPersistEmployee(String password, String email, String name, ComboBox<Role> roleComboBox) throws NoSuchFieldException {
+    public void createAndPersistEmployee(String password, String email, String name, ComboBox<Role> roleComboBox) throws NoSuchFieldException {
         String hashedPassword = hashPassword(password);
         RoleModel role = fetchRoleFromDatabase(roleComboBox);
 
